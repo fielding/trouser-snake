@@ -1,6 +1,7 @@
 # Trouser Snake
 
 ### Todo
+
 - [x] Fix interpolation issues when rendering a piece “wraps around” the screen
 - [ ] Restrict food spawning under snake segments
 - [ ] Restrict food spawning too far off the screen
