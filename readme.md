@@ -19,5 +19,10 @@
 ### Consider/Review
 * Restrict food to only spawning on coordinates that are divisible by 16 (size of the sprites used in game)
 * Review interpolation of the segment pieces’ movement. I would like to recreate the 90degree turn look of the original snake games.
-* 
 
+
+- [ ] a task list item
+- [ ] list syntax required
+- [ ] normal **formatting**, @mentions, #1234 refs
+- [ ] incomplete
+- [x] completed
