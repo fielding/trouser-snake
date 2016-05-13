@@ -23,7 +23,7 @@
 * Figure out a way to allow games to extend the “CoreSystems”
 * Implement unique configuration for each game via configuration file
 * “EntityFactory” or some way to load entities from a file (data driven)
-* 
+* Evaluate pointer usage; switch to shared or unique ptrs where possible
 
 ### Consider/Review
 * Restrict food to only spawning on coordinates that are divisible by 16 (size of the sprites used in game)
