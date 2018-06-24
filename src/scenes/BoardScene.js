@@ -1,5 +1,6 @@
 import { Observable, BehaviorSubject, fromEvent, interval, animationFrameScheduler, combineLatest }  from 'rxjs';
-import { map, filter, scan, startWith, distinctUntilChanged, share, withLatestFrom, takeWhile, skip, tap } from 'rxjs/operators';
+import { map, filter, scan, startWith, distinctUntilChanged, share, withLatestFrom, takeWhile, skip, tap} from 'rxjs/operators';
+import { takeWhileInclusive } from 'rxjs-take-while-inclusive';
 
 const BOARD_COLUMNS = 25;
 const BOARD_ROWS = 25;
@@ -216,7 +217,7 @@ class BoardScene extends Phaser.Scene {
 
     const game$ = interval(1000 / 60, animationFrameScheduler).pipe(
       withLatestFrom(scene$, (_, scene) => scene),
-      takeWhile(scene => !isGameOver(scene))
+      takeWhileInclusive(state => !(BoardScene.isGameOver(state) || BoardScene.isLevelComplete(state)))
     ).subscribe({
       complete: () => console.log('Game Over'),
     });

@@ -24,7 +24,8 @@
     "raw-loader": "^0.5.1"
   },
   "dependencies": {
-    "phaser": "^3.3.0",
-    "rxjs": "^6.2.1"
+    "phaser": "github:photonstorm/phaser#master",
+    "rxjs": "^6.2.1",
+    "rxjs-take-while-inclusive": "^1.0.5"
   }
 }
