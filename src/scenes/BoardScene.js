@@ -78,6 +78,8 @@ const move = (snakeGroup, [direction, snakeLength]) => {
   };
   const dir = isOpposite(prevDir, direction) ? prevDir : direction;
 
+  rotateSprite(dir, snakeGroup);
+
   const nx = Phaser.Math.Wrap(cur.x + 20 * dir.x, 0, 20 * CONST.board.columns); // IS THIS THE RIGHT SPOT FOR ThIS
   const ny = Phaser.Math.Wrap(cur.y + 20 * dir.y, 0, 20 * CONST.board.rows); // IS THIS THE RIGHT SPOT FOR ThIS?
 
@@ -176,10 +178,10 @@ class BoardScene extends Phaser.Scene {
     this.registry.set('GameOver', false);
     this.registry.set('LevelComplete', false);
     this.cameras.main.setViewport(
-      window.innerWidth / 2 - 250,
+      ((window.innerWidth - 1000) / 3) * 2 + 500,
       window.innerHeight / 2 - 250,
-      502,
-      502
+      500,
+      500
     );
 
     const board = this.add
@@ -229,15 +231,23 @@ class BoardScene extends Phaser.Scene {
       share()
     );
 
-    const scene$ = combineLatest(
+    // const pieceEaten$ = pieces$.pipe(
+    //   skip(1),
+    //   tap(() => this.events.emit('addScore'))
+    // ).subscribe();
+
+    const state$ = combineLatest(
       snake$,
       pieces$,
       score$,
       (snake, pieces, score) => ({ snake, pieces, score })
     )
 
+
+    // all of the followinhg needs to be looked over/thought out
+
     const game$ = interval(1000 / 60, animationFrameScheduler).pipe(
-      withLatestFrom(scene$, (_, scene) => scene),
+      withLatestFrom(state$, (_, state) => state),
       takeWhileInclusive(state => !(BoardScene.isGameOver(state) || BoardScene.isLevelComplete(state)))
     ).subscribe({
       ticks: [],
@@ -261,6 +271,7 @@ class BoardScene extends Phaser.Scene {
         }
       },
     });
+  }
 }
 
 export default BoardScene;
