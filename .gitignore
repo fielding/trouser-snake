@@ -2,3 +2,4 @@ node_modules
 build
 assets/img/unoptimized
 assets/img/archived
+src/scenes/old
