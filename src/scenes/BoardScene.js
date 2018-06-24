@@ -25,9 +25,6 @@ const DIRECTIONS = {
 const getRandomNumber = (min, max) =>
   Math.floor(Math.random() * (max - min + 1) + min);
 
-const randomPinupPiece = () =>
-  getRandomNumber(1,2) === 1 ? 'pinup-piece' : 'pinup-piece2';
-
 
 ////////////////////////////////////////////////////////////////////////////////
 // No clue where this needs to go just yet
@@ -100,7 +97,7 @@ const eat = (piecesGroup, snakeGroup) => {
       if (BoardScene.checkCollision(piece, head)) {
         const { x, y } = BoardScene.getRandomPosition(snake);
         piecesGroup.remove(piece, true);
-        piecesGroup.create(x, y, randomPinupPiece());
+        piecesGroup.create(x, y, 'pinup-piece');
         return piecesGroup;
       }
     });
@@ -167,7 +164,7 @@ class BoardScene extends Phaser.Scene {
     for (let i = 0; i < n; i++) {
       // EXTRACT FOOD COUNT CONSTANT
       const { x, y } = BoardScene.getRandomPosition();
-      pieces.create(x, y, randomPinupPiece());
+      pieces.create(x, y, 'pinup-piece');
     }
 
     return pieces;
