@@ -94,8 +94,8 @@ const eat = (piecesGroup, snakeGroup) => {
     const head = snake[0];
 
     piecesGroup.getChildren().forEach((piece, i, arr) => {
-      if (checkCollision(piece, head)) {
-        const { x, y } = getRandomPosition(snake);
+      if (BoardScene.checkCollision(piece, head)) {
+        const { x, y } = BoardScene.getRandomPosition(snake);
         piecesGroup.remove(piece, true);
         piecesGroup.create(x, y, 'pinupPiece');
         return piecesGroup;
@@ -163,8 +163,8 @@ class BoardScene extends Phaser.Scene {
 
     for (let i = 0; i < n; i++) {
       // EXTRACT FOOD COUNT CONSTANT
-      const { x, y } = getRandomPosition();
       pieces.create(x, y, 'pinupPiece');
+      const { x, y } = BoardScene.getRandomPosition();
     }
 
     return pieces;
