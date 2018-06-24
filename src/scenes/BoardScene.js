@@ -178,10 +178,12 @@ class BoardScene extends Phaser.Scene {
       502
     );
 
-    const board = this.add.image(250, 250, 'board');
     const snake = this.generateSnake(10, 10, 3);
     const length$ = new BehaviorSubject(3); // EXTRACT CONSTANT FOR INITIAL SNAKE LENGTH
     const pieces = this.generatePieces(2, () => length$.next(1));
+    const board = this.add
+      .tileSprite(0, 0, 500, 500, 'board-pattern')
+      .setOrigin(0, 0);
     const keydown$ = fromEvent(document, 'keydown');
 
     const direction$ = keydown$.pipe(
