@@ -24,7 +24,7 @@ const config = {
       debug: false,
     },
   },
-  scene: [Boot, Controller, Clouds, Title, BoardScene, Pinup, GameOver, LevelComplete],
+  scene: [Boot, Clouds, Title, BoardScene, Pinup, GameOver, LevelComplete],
 };
 
 const game = new Phaser.Game(config);
