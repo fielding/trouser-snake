@@ -2,6 +2,13 @@ import { Observable, BehaviorSubject, fromEvent, interval, animationFrameSchedul
 import { map, filter, scan, startWith, distinctUntilChanged, share, withLatestFrom, takeWhile, skip, tap} from 'rxjs/operators';
 import { takeWhileInclusive } from 'rxjs-take-while-inclusive';
 
+////////////////////////////////////////////////////////////////////////////////
+// constants to move
+////////////////////////////////////////////////////////////////////////////////
+// const BOARD_CELL_SIZE = 20; Figure out where this is being used exactly
+// add constant for pinup and board size instead of magic numbers
+const PIECE_POINT_VALUE = 10;
+
 const BOARD_COLUMNS = 25;
 const BOARD_ROWS = 25;
 
@@ -12,43 +19,51 @@ const DIRECTIONS = {
   40: { x: 0, y: 1 },
 };
 
-const checkCollision = (a, b) => a.x === b.x && a.y === b.y;
 
-const isEmptyCell = (position, snake) =>
-  !snake.some(segment => checkCollision(segment, position));
-
-const isGameOver = scene => {
-  const snake = scene.snake.getChildren();
-  const head = snake[0];
-  return Phaser.Actions.GetFirst(snake, { x: head.x, y: head.y }, 1);
-};
-
-const isOpposite = (p, c) =>
-  (p.x + c.x === 0 || Math.abs(p.x + c.x) === 20) &&
-  (p.y + c.y === 0 || Math.abs(p.y + c.y) === 20);
-
+////////////////////////////////////////////////////////////////////////////////
+// consider moving this to a utils.js or something
+////////////////////////////////////////////////////////////////////////////////
 const getRandomNumber = (min, max) =>
   Math.floor(Math.random() * (max - min + 1) + min);
 
-const getRandomPosition = (snake = []) => {
-    const position = {
-          x: getRandomNumber(0, BOARD_COLUMNS - 1) * 20 + 10,
-          y: getRandomNumber(0, BOARD_ROWS - 1) * 20 + 10,
-        };
 
-    if (isEmptyCell(position, snake)) {
-          return position;
-        }
 
-    return getRandomPosition(snake);
-};
-
+////////////////////////////////////////////////////////////////////////////////
+// No clue where this needs to go just yet
+////////////////////////////////////////////////////////////////////////////////
 const nextDirection = (previous, next) => {
   if (next.x === previous.x * -1 || next.y === previous.y * -1) {
     return previous;
   }
 
   return next;
+};
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Consider moving to a snake class
+////////////////////////////////////////////////////////////////////////////////
+  //
+
+const isOpposite = (p, c) =>
+  (p.x + c.x === 0 || Math.abs(p.x + c.x) === 20) &&
+  (p.y + c.y === 0 || Math.abs(p.y + c.y) === 20);
+
+const rotateSprite = (dir, snake) => {
+  const snakeHead = snake.getFirst(true);
+  if (dir.x === -1) {
+    snakeHead.setRotation(0);
+    snakeHead.setFlipY(false);
+  } else if (dir.x === 1) {
+    snakeHead.setRotation(3.14159);
+    snakeHead.setFlipY(true);
+  } else if (dir.y === 1) {
+    snakeHead.setRotation(-1.5708);
+  } else if (dir.y === -1) {
+    snakeHead.setRotation(1.5708);
+  }
+
 };
 
 const move = (snakeGroup, [direction, snakeLength]) => {
@@ -90,47 +105,46 @@ const eat = (piecesGroup, snakeGroup) => {
   return piecesGroup;
 };
 
-
+////////////////////////////////////////////////////////////////////////////////
+// BoardScene
+////////////////////////////////////////////////////////////////////////////////
 class BoardScene extends Phaser.Scene {
-  constructor(test) {
+  constructor() {
     super({
       key: 'BoardScene',
-      active: true,
+      active: false,
     });
   }
 
-  preload() {
-    this.load.image(
-      'board',
-      'https://justfielding.com/fun/trousersnake/assets/img/board.png'
-    );
+  static checkCollision(a, b) {
+    return a.x === b.x && a.y === b.y;
+  }
 
-    this.load.image(
-      'pinupPiece',
-      'https://justfielding.com/fun/trousersnake/assets/img/pinup-piece.png'
-    );
+  static isLevelComplete(state) {
+    return state.score >= 200;
+  };
 
-    this.load.image(
-      'snakeEyeUpFacing',
-      'https://justfielding.com/fun/trousersnake/assets/img/snakeEye-up-facing.png'
-    );
-    this.load.image(
-      'snakeEyeLeftFacing',
-      'https://justfielding.com/fun/trousersnake/assets/img/snakeEye-left-facing.png'
-    );
-    this.load.image(
-      'snakeEyeDownFacing',
-      'https://justfielding.com/fun/trousersnake/assets/img/snakeEye-down-facing.png'
-    );
-    this.load.image(
-      'snakeEyeRightFacing',
-      'https://justfielding.com/fun/trousersnake/assets/img/snakeEye-right-facing.png'
-    );
+  static isGameOver(state) {
+    const snake = state.snake.getChildren();
+    const head = snake[0];
+    return Phaser.Actions.GetFirst(snake, { x: head.x, y: head.y }, 1);
+  }
 
-    this.load.image(
-      'snakeSegment',
-      'https://justfielding.com/fun/trousersnake/assets/img/snakeSegment.png'
-    );
+  static getRandomPosition(snake = []) {
+    const position = {
+          x: getRandomNumber(0, CONST.board.columns - 1) * 20 + 10,
+          y: getRandomNumber(0, CONST.board.rows - 1) * 20 + 10,
+        };
+
+    if (BoardScene.isEmptyCell(position, snake)) {
+          return position;
+        }
+
+    return BoardScene.getRandomPosition(snake);
+};
+
+  static isEmptyCell(position, snake){
+    return !snake.some(segment => BoardScene.checkCollision(segment, position));
   }
 
   generateSnake(x, y, l) {
@@ -211,9 +225,6 @@ class BoardScene extends Phaser.Scene {
       score$,
       (snake, pieces, score) => ({ snake, pieces, score })
     )
-    // ).pipe(takeWhile(scene => !isGameOver(scene))).subscribe({
-    //   complete: () => console.log('Game Over!'),
-    // });
 
     const game$ = interval(1000 / 60, animationFrameScheduler).pipe(
       withLatestFrom(scene$, (_, scene) => scene),
@@ -222,24 +233,7 @@ class BoardScene extends Phaser.Scene {
       complete: () => console.log('Game Over'),
     });
 
-    // ).pipe(
-    //   takeWhile(scene => !isGameOver(scene))o,
-    //   subscribe({
-    //     complete: () => console.log('Game Over!'),
-    //   })
-    // );
 
-    // const game$ = scene$.pipe(
-    //   interval(1000 / 60, animationFrameScheduler),
-    //   withLatestFrom(scene$, (_, scene) => scene),
-    //   takeWhile(scene => !isGameOver(scene))
-    // )
-    // .subscribe({
-    //   complete: () => console.log("Game Over!")
-    // });
-}
-
-  update() {}
 }
 
 export default BoardScene;
