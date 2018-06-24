@@ -1,6 +1,7 @@
 import { Observable, BehaviorSubject, fromEvent, interval, animationFrameScheduler, combineLatest }  from 'rxjs';
 import { map, filter, scan, startWith, distinctUntilChanged, share, withLatestFrom, takeWhile, skip, tap} from 'rxjs/operators';
 import { takeWhileInclusive } from 'rxjs-take-while-inclusive';
+import CONST from '../constants';
 
 ////////////////////////////////////////////////////////////////////////////////
 // constants to move
@@ -9,8 +10,6 @@ import { takeWhileInclusive } from 'rxjs-take-while-inclusive';
 // add constant for pinup and board size instead of magic numbers
 const PIECE_POINT_VALUE = 10;
 
-const BOARD_COLUMNS = 25;
-const BOARD_ROWS = 25;
 
 const DIRECTIONS = {
   37: { x: -1, y: 0 },
@@ -77,8 +76,8 @@ const move = (snakeGroup, [direction, snakeLength]) => {
   };
   const dir = isOpposite(prevDir, direction) ? prevDir : direction;
 
-  const nx = Phaser.Math.Wrap(cur.x + 20 * dir.x, 0, 20 * BOARD_COLUMNS); // IS THIS THE RIGHT SPOT FOR ThIS
-  const ny = Phaser.Math.Wrap(cur.y + 20 * dir.y, 0, 20 * BOARD_ROWS); // IS THIS THE RIGHT SPOT FOR ThIS?
+  const nx = Phaser.Math.Wrap(cur.x + 20 * dir.x, 0, 20 * CONST.board.columns); // IS THIS THE RIGHT SPOT FOR ThIS
+  const ny = Phaser.Math.Wrap(cur.y + 20 * dir.y, 0, 20 * CONST.board.rows); // IS THIS THE RIGHT SPOT FOR ThIS?
 
   Phaser.Actions.ShiftPosition(snakeGroup.getChildren(), nx, ny, 1);
 
@@ -181,11 +180,11 @@ class BoardScene extends Phaser.Scene {
       502
     );
 
-    const snake = this.generateSnake(10, 10, 3);
-    const length$ = new BehaviorSubject(3); // EXTRACT CONSTANT FOR INITIAL SNAKE LENGTH
     const board = this.add
       .tileSprite(0, 0, 500, 500, 'board-pattern')
       .setOrigin(0, 0);
+    const snake = this.generateSnake(10, 10, CONST.initialSnakeLength);
+    const length$ = new BehaviorSubject(CONST.initialSnakeLength); // EXTRACT CONSTANT FOR INITIAL SNAKE LENGTH
     const pieces = this.generatePieces(2, () => {
       // this.events.emit('addScore');
       this.registry.set('score', Number(this.registry.values.score) + CONST.piecePointValue);
@@ -209,7 +208,7 @@ class BoardScene extends Phaser.Scene {
 
     const score$ = snakeLength$.pipe(
       startWith(0),
-      scan((score, _) => score + 1)// EXTRACT CONSTANT FOR VALUE OF EACH PIECE EATEN
+      scan((score, _) => score + CONST.piecePointValue)// EXTRACT CONSTANT FOR VALUE OF EACH PIECE EATEN
     );
 
     const tick$ = interval(60); // EXTRACT CONSTANT FOR GAME SPEED AND MOVE TO CONFIG
