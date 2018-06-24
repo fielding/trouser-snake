@@ -25,6 +25,8 @@ const DIRECTIONS = {
 const getRandomNumber = (min, max) =>
   Math.floor(Math.random() * (max - min + 1) + min);
 
+const randomPinupPiece = () =>
+  getRandomNumber(1,2) === 1 ? 'pinup-piece' : 'pinup-piece2';
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -82,7 +84,7 @@ const move = (snakeGroup, [direction, snakeLength]) => {
   Phaser.Actions.ShiftPosition(snakeGroup.getChildren(), nx, ny, 1);
 
   if (snakeLength > snake.length) {
-    snakeGroup.create(last.x, last.y, 'snakeSegment');
+    snakeGroup.create(last.x, last.y, 'snake-body');
   }
 
   return snakeGroup;
@@ -96,7 +98,7 @@ const eat = (piecesGroup, snakeGroup) => {
       if (BoardScene.checkCollision(piece, head)) {
         const { x, y } = BoardScene.getRandomPosition(snake);
         piecesGroup.remove(piece, true);
-        piecesGroup.create(x, y, 'pinupPiece');
+        piecesGroup.create(x, y, randomPinupPiece());
         return piecesGroup;
       }
     });
@@ -148,10 +150,10 @@ class BoardScene extends Phaser.Scene {
 
   generateSnake(x, y, l) {
     const snake = this.add.group();
-    snake.create(10 * 20 + 10, 10 * 20 + 10, 'snakeEyeLeftFacing');
+    snake.create(10 * 20 + 10, 10 * 20 + 10, 'snake-head');
 
     for (let i = 1; i < l; i++) {
-      snake.create((10 + i) * 20 + 10, 10 * 20 + 10, 'snakeSegment');
+      snake.create((10 + i) * 20 + 10, 10 * 20 + 10, 'snake-body');
     }
 
     return snake;
@@ -162,8 +164,8 @@ class BoardScene extends Phaser.Scene {
 
     for (let i = 0; i < n; i++) {
       // EXTRACT FOOD COUNT CONSTANT
-      pieces.create(x, y, 'pinupPiece');
       const { x, y } = BoardScene.getRandomPosition();
+      pieces.create(x, y, randomPinupPiece());
     }
 
     return pieces;
