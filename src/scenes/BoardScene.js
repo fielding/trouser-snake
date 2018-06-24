@@ -239,10 +239,27 @@ class BoardScene extends Phaser.Scene {
       withLatestFrom(scene$, (_, scene) => scene),
       takeWhileInclusive(state => !(BoardScene.isGameOver(state) || BoardScene.isLevelComplete(state)))
     ).subscribe({
-      complete: () => console.log('Game Over'),
+      ticks: [],
+      changeScene: key => {
+        // this.scene.stop('Pinup');
+        this.scene.start(key)
+        this.registry.set(key, true);
+      },
+      next(value) {
+        this.ticks.push(value);
+      },
+      complete() {
+
+        if (BoardScene.isGameOver(this.ticks[this.ticks.length - 1])) {
+          this.changeScene('GameOver');
+
+        }
+
+        if (BoardScene.isLevelComplete(this.ticks[this.ticks.length - 1])) {
+          this.changeScene('LevelComplete');
+        }
+      },
     });
-
-
 }
 
 export default BoardScene;
