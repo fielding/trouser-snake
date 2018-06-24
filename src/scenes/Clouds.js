@@ -1,25 +1,8 @@
-class CloudScene extends Phaser.Scene {
+class Clouds extends Phaser.Scene {
   constructor() {
     super({
-      key: 'CloudScene',
-      active: true,
-    });
-  }
-
-  preload() {
-    this.load.image({
-      key: 'nearground',
-      url: '../assets/img/nearground.png',
-    });
-
-    this.load.image({
-      key: 'midground',
-      url: '../assets/img/midground.png',
-    });
-
-    this.load.image({
-      key: 'farground',
-      url: '../assets/img/farground.png',
+      key: 'Clouds',
+      active: false,
     });
   }
 
@@ -61,4 +44,4 @@ class CloudScene extends Phaser.Scene {
   }
 }
 
-export default CloudScene;
+export default Clouds;

@@ -1,6 +1,6 @@
 import 'phaser';
-import CloudScene from './scenes/CloudScene';
 import Boot from './scenes/Boot';
+import Clouds from './scenes/Clouds';
 import Title from './scenes/Title';
 import BoardScene from './scenes/BoardScene';
 import GameOver from './scenes/GameOver';
@@ -24,7 +24,7 @@ const config = {
       debug: false,
     },
   },
-  scene: [CloudScene, BoardScene],
+  scene: [Boot, Controller, Clouds, Title, BoardScene, Pinup, GameOver, LevelComplete],
 };
 
 const game = new Phaser.Game(config);
