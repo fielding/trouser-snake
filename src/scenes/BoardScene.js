@@ -171,6 +171,9 @@ class BoardScene extends Phaser.Scene {
   }
 
   create() {
+    this.registry.set('score', 0);
+    this.registry.set('GameOver', false);
+    this.registry.set('LevelComplete', false);
     this.cameras.main.setViewport(
       window.innerWidth / 2 - 250,
       window.innerHeight / 2 - 250,
@@ -180,10 +183,14 @@ class BoardScene extends Phaser.Scene {
 
     const snake = this.generateSnake(10, 10, 3);
     const length$ = new BehaviorSubject(3); // EXTRACT CONSTANT FOR INITIAL SNAKE LENGTH
-    const pieces = this.generatePieces(2, () => length$.next(1));
     const board = this.add
       .tileSprite(0, 0, 500, 500, 'board-pattern')
       .setOrigin(0, 0);
+    const pieces = this.generatePieces(2, () => {
+      // this.events.emit('addScore');
+      this.registry.set('score', Number(this.registry.values.score) + CONST.piecePointValue);
+      length$.next(1)
+    });
     const keydown$ = fromEvent(document, 'keydown');
 
     const direction$ = keydown$.pipe(
