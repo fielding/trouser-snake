@@ -1,13 +1,23 @@
 import 'phaser';
 import CloudScene from './scenes/CloudScene';
+import Boot from './scenes/Boot';
+import Title from './scenes/Title';
 import BoardScene from './scenes/BoardScene';
+import GameOver from './scenes/GameOver';
+import LevelComplete from './scenes/LevelComplete';
+import Pinup from './scenes/Pinup';
+import CONST from './constants';
 
 const config = {
   type: Phaser.AUTO,
   width: window.innerWidth,
   height: window.innerHeight,
-  backgroundColor: 0x92d4f7,
-  scaleMode: 0, // Phaser.ScaleManager.EXACT_FIT,
+  loader: {
+    baseURL: '../',
+    path: 'assets/img/',
+    crossOrigin: true,
+  },
+  backgroundColor: CONST.colors.lightSkyBlue,
   physics: {
     default: 'arcade',
     arcade: {
