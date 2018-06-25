@@ -108,15 +108,15 @@ class Boot extends Phaser.Scene {
 
     this.cropCam = this.cameras.add(bwBounds.x, bwBounds.y + this.hairLowerBounds, bwBounds.width, 0);
     this.cropCam.setScroll(color.getBounds().x, bwBounds.y + this.hairLowerBounds);
+
     this.load.on('progress', this.onLoadProgress, this);
     this.load.on('complete', this.onLoadComplete, this);
   }
 
   create() {
-    this.scene.run('Clouds');
+    this.scene.launch('Clouds');
     this.scene.start('Title');
   }
-
 
   onLoadProgress(progress) {
     const change = (progress - this.progress) * this.hairLowerBounds;
@@ -127,12 +127,10 @@ class Boot extends Phaser.Scene {
     console.debug(`${Math.round(progress * 100)}%`);
   }
 
-
   onLoadComplete(loader, totalComplete, totalFailed) {
     console.debug('completed: ', totalComplete);
     console.debug('failed: ', totalFailed);
   }
-
 }
 
 export default Boot;
