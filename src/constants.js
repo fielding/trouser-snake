@@ -1,6 +1,7 @@
 module.exports = {
   colors: {
     lightSkyBlue: '#92d4f7',
+    greySuit: '#938E9F',
     nero: '#282828', // that's reall the colors name
   },
 

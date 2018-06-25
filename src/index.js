@@ -17,7 +17,7 @@ const config = {
     path: 'assets/img/',
     crossOrigin: true,
   },
-  backgroundColor: CONST.colors.lightSkyBlue,
+  backgroundColor: CONST.colors.greySuit,
   physics: {
     default: 'arcade',
     arcade: {
