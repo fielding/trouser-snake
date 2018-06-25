@@ -59,11 +59,6 @@ class Boot extends Phaser.Scene {
     });
 
     this.load.image({
-      key: 'pinup-placeholder',
-      url: 'pinup-placeholder.png',
-    });
-
-    this.load.image({
       key: 'skb-placeholder',
       url: 'skb-placeholder.png',
     });
