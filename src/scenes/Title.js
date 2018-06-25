@@ -46,8 +46,7 @@ class Title extends Phaser.Scene {
 
     this.input.manager.enabled = true;
     this.input.keyboard.on('keydown', event => {
-      this.scene.run('Pinup');
-      this.scene.start('BoardScene')
+      this.scene.start('Interface')
     });
 
     this.events.on('resize', this.resize, this);

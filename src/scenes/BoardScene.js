@@ -1,5 +1,5 @@
-import { Observable, BehaviorSubject, fromEvent, interval, animationFrameScheduler, combineLatest }  from 'rxjs';
-import { map, filter, scan, startWith, distinctUntilChanged, share, withLatestFrom, takeWhile, skip, tap} from 'rxjs/operators';
+import { Observable, BehaviorSubject, Subject, NEVER, fromEvent, interval, animationFrameScheduler, combineLatest }  from 'rxjs';
+import { map, filter, scan, startWith, switchMap, distinctUntilChanged, share, withLatestFrom, tap} from 'rxjs/operators';
 import { takeWhileInclusive } from 'rxjs-take-while-inclusive';
 import CONST from '../constants';
 
@@ -243,31 +243,79 @@ class BoardScene extends Phaser.Scene {
 
     // all of the followinhg needs to be looked over/thought out
 
-    const game$ = interval(1000 / 60, animationFrameScheduler).pipe(
-      withLatestFrom(state$, (_, state) => state),
-      takeWhileInclusive(state => !(BoardScene.isGameOver(state) || BoardScene.isLevelComplete(state)))
-    ).subscribe({
-      ticks: [],
-      changeScene: key => {
-        // this.scene.stop('Pinup');
-        this.scene.start(key)
-        this.registry.set(key, true);
-      },
-      next(value) {
-        this.ticks.push(value);
-      },
-      complete() {
+    // const game$ = interval(1000 / 60, animationFrameScheduler).pipe(
+    //   withLatestFrom(state$, (_, state) => state),
+    //   takeWhileInclusive(state => !(BoardScene.isGameOver(state) || BoardScene.isLevelComplete(state)))
+    // ).subscribe({
+    //   ticks: [],
+    //   changeScene: key => {
+    //     // this.scene.stop('Pinup');
+    //     this.scene.start(key)
+    //     this.registry.set(key, true);
+    //   },
+    //   next(value) {
+    //     this.ticks.push(value);
+    //   },
+    //   complete() {
+    //
+    //     if (BoardScene.isGameOver(this.ticks[this.ticks.length - 1])) {
+    //       this.changeScene('GameOver');
+    //
+    //     }
+    //
+    //     if (BoardScene.isLevelComplete(this.ticks[this.ticks.length - 1])) {
+    //       this.changeScene('LevelComplete');
+    //     }
+    //   },
+    // });
 
-        if (BoardScene.isGameOver(this.ticks[this.ticks.length - 1])) {
-          this.changeScene('GameOver');
 
-        }
+    const game$ = interval(1000 / 60, animationFrameScheduler).pipe(withLatestFrom(state$, (_, state) => state));
 
-        if (BoardScene.isLevelComplete(this.ticks[this.ticks.length - 1])) {
-          this.changeScene('LevelComplete');
-        }
-      },
-    });
+    this.pauser = new Subject();
+    const pausable$ = this.pauser
+      .pipe(
+        switchMap(paused => paused? NEVER : game$),
+        takeWhileInclusive(state => !(BoardScene.isGameOver(state) || BoardScene.isLevelComplete(state))),
+      )
+      .subscribe({
+        ticks: [],
+        changeScene: key => {
+          this.scene.start(key)
+          this.registry.set(key, true);
+        },
+        next(value) {
+          this.ticks.push(value);
+          console.debug(this.ticks);
+
+          // UPDATE: I was able to undo this by simply moving the takeWhileInclusive
+          // to the pausable stream
+          //
+          // for now I have moved the complete() logic to next. This is due to
+          // the switchMap added to make the game pausable uses NEVER which
+          // never completes, so the complete() logic was not being ran
+          // if (BoardScene.isGameOver(value)) {
+          //   this.changeScene('GameOver');
+          // }
+          //
+          // if (BoardScene.isLevelComplete(value)) {
+          //   this.changeScene('LevelComplete');
+          // }
+        },
+        complete() {
+          console.log('complete!')
+          if (BoardScene.isGameOver(this.ticks[this.ticks.length - 1])) {
+            this.changeScene('GameOver');
+          }
+
+          if (BoardScene.isLevelComplete(this.ticks[this.ticks.length - 1])) {
+            this.changeScene('LevelComplete');
+          }
+        },
+      });
+
+    this.pauser.next(false);
+
   }
 }
 
