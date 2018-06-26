@@ -1,3 +1,5 @@
+import { NERO } from '../constants/colors.js';
+
 class Interface extends Phaser.Scene {
   constructor() {
     super({
@@ -9,12 +11,53 @@ class Interface extends Phaser.Scene {
   }
 
   create() {
-    this.scene.launch('Pinup');
-    this.scene.launch('Board');
+
+    const pinup = this.scene.get('Pinup');
+    const board = this.scene.get('Board');
+
+    this.scene
+      .launch(pinup)
+      .launch(board);
+
+    const scale = Math.min(
+      this.sys.game.config.width / 3840,
+      this.sys.game.config.height / 2160
+    );
+
+    this.score = this.add
+      .text(
+        // this.sys.game.config.width / 3,
+        ((window.innerWidth - 1000) / 3) * 2 + 750,
+        this.sys.game.config.height / 8,
+        'score: 0',
+        {
+          fontFamily: 'Akbar',
+          fontSize: 144 * scale,
+          color: NERO,
+        }
+      )
+      .setOrigin(0.5);
+
+    this.level = this.add
+      .text(
+        // this.sys.game.config.width / 3,
+        (window.innerWidth - 1000) / 3 + 250,
+        this.sys.game.config.height / 8,
+        'level: 1',
+        {
+          fontFamily: 'Akbar',
+          fontSize: 144 * scale,
+          color: NERO,
+        }
+      )
+      .setOrigin(0.5);
 
     this.input.manager.enabled = true;
-
     this.input.keyboard.on('keydown_P', this.togglePause, this);
+    this.input.keyboard.on('keydown_ESC', this.togglePause, this); // change this to toggleMenu
+
+    this.registry.events.on('changedata', this.updateData, this);
+
   }
 
   pause() {
@@ -35,6 +78,23 @@ class Interface extends Phaser.Scene {
     } else {
       this.pause()
     }
+  }
+
+  toggleMenu() {
+    // menu code
+  }
+
+  setScoreDisplay(score) {
+    this.score.setText(`score: ${score}`);
+  }
+
+  setLevelDisplay(level) {
+    this.level.setText(`level: ${level}`);
+  }
+
+  updateData() {
+    this.setScoreDisplay(this.registry.values.score);
+    this.setLevelDisplay(this.registry.values.level);
   }
 }
 
