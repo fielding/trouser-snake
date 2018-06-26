@@ -11,6 +11,9 @@ class Board extends Phaser.Scene {
   }
 
   create() {
+    if(this.registry.values.level === undefined) {
+      this.registry.set('level', 1);
+    }
     this.registry.set('score', 0);
     this.registry.set('GameOver', false);
     this.registry.set('LevelComplete', false);
@@ -34,6 +37,10 @@ class Board extends Phaser.Scene {
     if (!this.snake.alive) {
       this.registry.set('GameOver', true);
       this.scene.start('GameOver');
+    } else if (this.registry.values.score >= 200) {
+      this.registry.set('LevelComplete', true);
+      this.registry.values.level += 1;
+      this.scene.start('LevelComplete');
     } else {
       if (this.snake.update(time)) {
         this.checkCollision();
