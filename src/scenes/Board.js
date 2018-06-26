@@ -55,11 +55,15 @@ class Board extends Phaser.Scene {
   }
 
   isCellEmpty(cell) {
-    if (this.snake != undefined && this.snake.body.getChildren().some(segment => this.collided(segment, cell))) {
+    const adjustedCell = {
+      x: cell.x * GRID_SIZE + (GRID_SIZE / 2),
+      y: cell.y * GRID_SIZE + (GRID_SIZE / 2)
+    }
+    if (this.snake != undefined && this.snake.body.getChildren().some(segment => this.collided(segment, adjustedCell))) {
       return false;
     }
 
-    if (this.piece != undefined && this.collided(cell, this.piece)) {
+    if (this.piece != undefined && this.collided(adjustedCell, this.piece)) {
       return false;
     }
 
