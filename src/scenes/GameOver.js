@@ -10,6 +10,9 @@ class GameOver extends Phaser.Scene {
   }
 
   create() {
+    this.scene.setVisible(false, 'Interface');
+    this.scene.setVisible(false, 'Pinup');
+
     const gameover = this.add
       .text(
         this.sys.game.config.width / 2,
@@ -32,9 +35,15 @@ class GameOver extends Phaser.Scene {
 
 
     this.input.manager.enabled = true;
-    this.input.keyboard.on('keydown', event => this.scene.start('Board'));
+    this.input.keyboard.on('keydown', this.restart, this);
   }
 
+  restart() {
+
+    this.scene.setVisible(true, 'Interface');
+    this.scene.setVisible(true, 'Pinup');
+    this.scene.start('Board');
+  }
 
   update() {
   }
