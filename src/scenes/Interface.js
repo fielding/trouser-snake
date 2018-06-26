@@ -10,45 +10,21 @@ class Interface extends Phaser.Scene {
 
   create() {
     this.scene.launch('Pinup');
-    this.scene.launch('BoardScene');
+    this.scene.launch('Board');
 
     this.input.manager.enabled = true;
 
     this.input.keyboard.on('keydown_P', this.togglePause, this);
-
-    // this.input.keyboard.on('keydown_A', event => {
-    //   this.scene.setActive(true, 'CloudScene1');
-    //   this.scene.setVisible(true, 'CloudScene1');
-    // });
-    //
-    //
-    // this.input.keyboard.on('keydown_B', event => {
-    //   this.scene.setActive(true, 'CloudScene');
-    //   this.scene.setVisible(true, 'CloudScene');
-    // });
-    //
-    // this.input.keyboard.on('keydown_SPACE', event => {
-    //   this.scene.setActive(false, 'CloudScene1');
-    //   this.scene.setVisible(false, 'CloudScene1');
-    //   this.scene.setActive(false, 'CloudScene');
-    //   this.scene.setVisible(false, 'CloudScene');
-    //   console.log('space');
-    // });
-    //
   }
 
   pause() {
-    const board = this.scene.get('BoardScene');
-    this.scene.pause('BoardScene');
-    board.pauser.next(true);
+    this.scene.pause('Board');
     this.isPaused = true;
     console.debug('pause');
   }
 
   unpause() {
-    const board = this.scene.get('BoardScene');
-    this.scene.resume('BoardScene');
-    board.pauser.next(false);
+    this.scene.resume('Board');
     this.isPaused = false;
     console.debug('unpause');
   }

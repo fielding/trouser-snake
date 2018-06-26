@@ -32,7 +32,7 @@ class GameOver extends Phaser.Scene {
 
 
     this.input.manager.enabled = true;
-    this.input.keyboard.on('keydown', event => this.scene.start('BoardScene'));
+    this.input.keyboard.on('keydown', event => this.scene.start('Board'));
   }
 
 

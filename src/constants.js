@@ -19,4 +19,10 @@ module.exports = {
   },
   piecePointValue: 10,
   initialSnakeLength: 3,
+
+  GRID_COLUMNS: 25,
+  GRID_ROWS: 25,
+  GRID_SIZE: 20,
+  SNAKE_LENGTH: 3,
+
 };
