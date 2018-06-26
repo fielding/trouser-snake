@@ -24,7 +24,6 @@
     "raw-loader": "^0.5.1"
   },
   "dependencies": {
-    "phaser": "github:photonstorm/phaser#master",
-    "rxjs": "^6.2.1"
+    "phaser": "github:photonstorm/phaser#master"
   }
 }
