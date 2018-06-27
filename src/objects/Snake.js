@@ -28,22 +28,21 @@ export class Snake {
       Phaser.Math.Wrap(this.position.y + this.direction.y, 0, GRID_ROWS * GRID_SIZE)
     );
 
-    Phaser.Actions.ShiftPosition(this.body.getChildren(), this.position.x, this.position.y, 1, this.tailPosition);
-    this.moveTime = time + this.moveDelay;
-    this.rotateSprite();
 
-    if (this.hitSelf()) {
-      this.alive = false;
-      return false;
-    }
+    Phaser.Actions.ShiftPosition(this.body.getChildren(), this.position.x, this.position.y, 1, this.tailPosition);
+    this.rotateSprite();
 
     if (this.length > this.body.getLength()) {
       this.body.create(this.tailPosition.x, this.tailPosition.y, 'snake-body');
     }
 
 
+    if (this.hitSelf()) {
+      this.alive = false;
+      return false;
+    }
 
-
+    this.moveTime = time + this.moveDelay;
     return true;
   }
 
@@ -51,16 +50,16 @@ export class Snake {
     const {left, right, up, down} = this.cursors;
     if (this.updated) {
       if (Phaser.Input.Keyboard.JustDown(up) && Math.abs(this.direction.x) === GRID_SIZE) {
-      this.direction.setTo(0, -GRID_SIZE);
+        this.direction.setTo(0, -GRID_SIZE);
         this.updated = false;
       } else if (Phaser.Input.Keyboard.JustDown(down) && Math.abs(this.direction.x) === GRID_SIZE) {
-      this.direction.setTo(0, GRID_SIZE);
+        this.direction.setTo(0, GRID_SIZE);
         this.updated = false;
       } else if (Phaser.Input.Keyboard.JustDown(left) && Math.abs(this.direction.y) === GRID_SIZE) {
-      this.direction.setTo(-GRID_SIZE, 0);
+        this.direction.setTo(-GRID_SIZE, 0);
         this.updated = false;
       } else if (Phaser.Input.Keyboard.JustDown(right) && Math.abs(this.direction.y) === GRID_SIZE) {
-      this.direction.setTo(GRID_SIZE, 0);
+        this.direction.setTo(GRID_SIZE, 0);
         this.updated = false;
       }
     }
