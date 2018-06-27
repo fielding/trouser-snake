@@ -5,6 +5,7 @@ export class Snake {
     this.position = new Phaser.Geom.Point(x * GRID_SIZE + GRID_SIZE / 2, y * GRID_SIZE + GRID_SIZE / 2);
     this.tailPosition = new Phaser.Geom.Point(0, 0);
     this.direction = new Phaser.Geom.Point(-GRID_SIZE, 0);
+    this.updated = true;
     this.moveTime = 0;
     this.moveDelay = 60;
     this.alive = true;
@@ -47,17 +48,23 @@ export class Snake {
   }
 
   handleInput() {
-    if (this.cursors.up.isDown && this.direction.y != GRID_SIZE ) {
+    const {left, right, up, down} = this.cursors;
+    if (this.updated) {
+      if (Phaser.Input.Keyboard.JustDown(up) && Math.abs(this.direction.x) === GRID_SIZE) {
       this.direction.setTo(0, -GRID_SIZE);
-    } else if (this.cursors.down.isDown && this.direction.y != -GRID_SIZE) {
+        this.updated = false;
+      } else if (Phaser.Input.Keyboard.JustDown(down) && Math.abs(this.direction.x) === GRID_SIZE) {
       this.direction.setTo(0, GRID_SIZE);
-    } else if (this.cursors.left.isDown && this.direction.x != GRID_SIZE) {
+        this.updated = false;
+      } else if (Phaser.Input.Keyboard.JustDown(left) && Math.abs(this.direction.y) === GRID_SIZE) {
       this.direction.setTo(-GRID_SIZE, 0);
-    } else if (this.cursors.right.isDown && this.direction.x != -GRID_SIZE) {
+        this.updated = false;
+      } else if (Phaser.Input.Keyboard.JustDown(right) && Math.abs(this.direction.y) === GRID_SIZE) {
       this.direction.setTo(GRID_SIZE, 0);
+        this.updated = false;
+      }
     }
   }
-
 
   rotateSprite() {
     if (this.direction.x === -GRID_SIZE) {
@@ -83,6 +90,7 @@ export class Snake {
 
   update(time) {
     if (time >= this.moveTime) {
+      this.updated = true;
       return this.move(time);
     }
     return false;
