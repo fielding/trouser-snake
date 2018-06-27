@@ -7,7 +7,7 @@ import Board from './scenes/Board';
 import GameOver from './scenes/GameOver';
 import LevelComplete from './scenes/LevelComplete';
 import Pinup from './scenes/Pinup';
-import CONST from './constants';
+import { GREY_SUIT } from './constants/colors';
 
 const config = {
   type: Phaser.AUTO,
@@ -17,7 +17,7 @@ const config = {
     path: 'assets/img/',
     crossOrigin: true,
   },
-  backgroundColor: CONST.colors.greySuit,
+  backgroundColor: GREY_SUIT,
   physics: {
     default: 'arcade',
     arcade: {

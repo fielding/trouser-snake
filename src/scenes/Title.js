@@ -1,4 +1,4 @@
-import CONST from '../constants';
+import { NERO } from '../constants/colors';
 
 class Title extends Phaser.Scene {
   constructor() {
@@ -24,7 +24,7 @@ class Title extends Phaser.Scene {
         {
           fontFamily: 'Akbar',
           fontSize: 432 * scale,
-          color: CONST.colors.nero,
+          color: NERO,
         }
       )
       .setPadding(16)
@@ -38,7 +38,7 @@ class Title extends Phaser.Scene {
         {
           fontFamily: 'Akbar',
           fontSize: 144 * scale,
-          color: CONST.colors.nero,
+          color: NERO,
         }
       )
       .setPadding(16)

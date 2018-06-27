@@ -1,3 +1,5 @@
+import { NERO } from '../constants/colors.js';
+
 class GameOver extends Phaser.Scene {
   constructor() {
     super({
@@ -18,7 +20,7 @@ class GameOver extends Phaser.Scene {
         this.sys.game.config.width / 2,
         this.sys.game.config.height / 4,
         'Game Over!',
-        { fontFamily: 'Akbar', fontSize: 144, color: '#282828' }
+        { fontFamily: 'Akbar', fontSize: 144, color: NERO }
       )
       .setPadding(16)
       .setOrigin(0.5);
@@ -28,7 +30,7 @@ class GameOver extends Phaser.Scene {
         this.sys.game.config.width / 2,
         this.sys.game.config.height / 2.5,
         'Press any key to restart',
-        { fontFamily: 'Akbar', fontSize: 32, color: '#282828' }
+        { fontFamily: 'Akbar', fontSize: 32, color: NERO }
       )
       .setPadding(16)
       .setOrigin(0.5);

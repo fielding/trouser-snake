@@ -1,4 +1,4 @@
-import CONST from '../constants';
+import { LIGHT_SKY_BLUE } from '../constants/colors';
 
 class Clouds extends Phaser.Scene {
   constructor() {
@@ -9,7 +9,7 @@ class Clouds extends Phaser.Scene {
   }
 
   create() {
-    this.cameras.main.setBackgroundColor(CONST.colors.lightSkyBlue);
+    this.cameras.main.setBackgroundColor(LIGHT_SKY_BLUE);
     const { width, height } = this.sys.game.config;
 
     this.nearground = this.add

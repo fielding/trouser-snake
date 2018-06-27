@@ -1,4 +1,4 @@
-import { GRID_SIZE } from '../constants';
+import { GRID_SIZE } from '../constants/settings.js';
 
 export class PinupPiece extends Phaser.GameObjects.Image {
   constructor(scene, position) {

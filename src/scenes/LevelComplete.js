@@ -1,3 +1,5 @@
+import { NERO } from '../constants/colors.js';
+
 class LevelComplete extends Phaser.Scene {
   constructor() {
     super({
@@ -18,7 +20,7 @@ class LevelComplete extends Phaser.Scene {
         this.sys.game.config.width / 2,
         this.sys.game.config.height / 4,
         'Level Complete!',
-        { fontFamily: 'Akbar', fontSize: 144, color: '#282828' }
+        { fontFamily: 'Akbar', fontSize: 144, color: NERO }
       )
       .setPadding(16)
       .setOrigin(0.5);
@@ -28,7 +30,7 @@ class LevelComplete extends Phaser.Scene {
         this.sys.game.config.width / 2,
         this.sys.game.config.height / 2.5,
         'Press enter key to continue',
-        { fontFamily: 'Akbar', fontSize: 32, color: '#282828' }
+        { fontFamily: 'Akbar', fontSize: 32, color: NERO }
       )
       .setPadding(16)
       .setOrigin(0.5);

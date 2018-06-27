@@ -1,6 +1,6 @@
 import { Snake } from '../objects/Snake.js';
 import { PinupPiece } from '../objects/PinupPiece.js'
-import { GRID_COLUMNS, GRID_ROWS, GRID_SIZE } from '../constants.js';
+import { GRID_COLUMNS, GRID_ROWS, GRID_SIZE } from '../constants/settings.js';
 
 class Board extends Phaser.Scene {
   constructor() {
@@ -55,9 +55,9 @@ class Board extends Phaser.Scene {
 
   checkCollision() {
     if (this.collided(this.snake.head, this.piece)) {
+      this.registry.set('score', this.registry.values.score + 10);
       this.snake.grow();
       this.piece.reposition(this.getRandomEmptyPosition());
-      this.registry.set('score', this.registry.values.score + 10);
     }
   }
 

@@ -1,4 +1,4 @@
-import { SNAKE_LENGTH, GRID_COLUMNS, GRID_ROWS, GRID_SIZE } from '../constants'
+import { SNAKE_LENGTH, GRID_COLUMNS, GRID_ROWS, GRID_SIZE } from '../constants/settings.js'
 
 export class Snake {
   constructor(scene, x, y) {
