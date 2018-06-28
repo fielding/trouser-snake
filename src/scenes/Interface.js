@@ -27,8 +27,8 @@ class Interface extends Phaser.Scene {
     this.score = this.add
       .text(
         // this.sys.game.config.width / 3,
-        ((window.innerWidth - 1000) / 3) * 2 + 750,
-        this.sys.game.config.height / 8,
+        ((this.sys.game.config.width - 1000) / 3) * 2 + 750,
+        (this.sys.game.config.height - 500) / 4,
         'score: 0',
         {
           fontFamily: 'Akbar',
@@ -41,8 +41,8 @@ class Interface extends Phaser.Scene {
     this.level = this.add
       .text(
         // this.sys.game.config.width / 3,
-        (window.innerWidth - 1000) / 3 + 250,
-        this.sys.game.config.height / 8,
+        (this.sys.game.config.width - 1000) / 3 + 250,
+        (this.sys.game.config.height - 500) / 4,
         'level: 1',
         {
           fontFamily: 'Akbar',
