@@ -1,0 +1,11 @@
+@font-face {
+  font-family: 'Akbar';
+  src: url('Akbar.eot');
+  src: url('Akbar.woff2') format('woff2');
+       url('Akbar.woff') format('woff');
+       url('Akbar.ttf') format('truetype');
+       url('Akbar.svg#Akbar') format('svg');
+       url('Akbar.eot?#iefix') format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+}

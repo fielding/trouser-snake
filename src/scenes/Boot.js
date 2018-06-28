@@ -8,91 +8,65 @@ class Boot extends Phaser.Scene {
           {
             type: 'image',
             key: 'loading-marge-bw',
-            url: 'loading-marge-bw.png',
+            url: 'assets/img/loading-marge-bw.png',
           },
           {
             type: 'image',
             key: 'loading-marge-color',
-            url: 'loading-marge-color.png',
+            url: 'assets/img/loading-marge-color.png',
           },
         ],
       },
     });
 
     this.progress = 0;
+    this.loaded = false;
   }
 
   preload() {
-    this.load.image({
-      key: 'nearground',
-      url: 'nearground.png',
-    });
-
-    this.load.image({
-      key: 'midground',
-      url: 'midground.png',
-    });
-
-    this.load.image({
-      key: 'farground',
-      url: 'farground.png',
-    });
-
-    this.load.image({
-      key: 'snake-head',
-      url: 'snake-head.png',
-    });
-
-    this.load.image({
-      key: 'snake-body',
-      url: 'snake-body.png',
-    });
-
-    this.load.image({
-      key: 'board-pattern',
-      url: 'board-pattern.png',
-    });
-
-    this.load.image({
-      key: 'pinup-piece',
-      url: 'pinup-piece.png',
-    });
-
-    this.load.image({
-      key: 'skb-placeholder',
-      url: 'skb-placeholder.png',
-    });
-
-    this.load.spritesheet({
-      key: 'pinup',
-      url: 'pinup.png',
-      frameConfig: {
-        frameWidth: 250,
-        frameHeight: 200,
-      },
-    });
-
-    // from here down is to test loading
-
-    // this.load.image({
-    //   key: 'six',
-    //   url: 'six.jpg'
-    // });
-    //
-    // this.load.image({
-    //   key: 'seven',
-    //   url: 'six.jpg'
-    // });
-    //
-    // this.load.image({
-    //   key: 'eight',
-    //   url: 'six.jpg'
-    // });
-    //
-    // this.load.image({
-    //   key: 'nine',
-    //   url: 'six.jpg'
-    // });
+    this.load
+      .script('https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont')
+      .setPath('assets/img/')
+      .image({
+        key: 'nearground',
+        url: 'nearground.png',
+      })
+      .image({
+        key: 'midground',
+        url: 'midground.png',
+      })
+      .image({
+        key: 'farground',
+        url: 'farground.png',
+      })
+      .image({
+        key: 'snake-head',
+        url: 'snake-head.png',
+      })
+      .image({
+        key: 'snake-body',
+        url: 'snake-body.png',
+      })
+      .image({
+        key: 'board-pattern',
+        url: 'board-pattern.png',
+      })
+      .image({
+        key: 'pinup-piece',
+        url: 'pinup-piece.png',
+      })
+      .image({
+        key: 'skb-placeholder',
+        url: 'skb-placeholder.png',
+      })
+      .spritesheet({
+        key: 'pinup',
+        url: 'pinup.png',
+        frameConfig: {
+          frameWidth: 250,
+          frameHeight: 200,
+        },
+      });
 
     const { width, height } = this.sys.game.config;
     const scale = Math.min(width / 3840, height / 2160);
@@ -106,16 +80,19 @@ class Boot extends Phaser.Scene {
     this.hairLowerBounds = 606 * scale;
     const bwBounds = bw.getBounds();
 
-    this.cropCam = this.cameras.add(bwBounds.x, bwBounds.y + this.hairLowerBounds, bwBounds.width, 0);
-    this.cropCam.setScroll(color.getBounds().x, bwBounds.y + this.hairLowerBounds);
+    this.cropCam = this.cameras.add(
+      bwBounds.x,
+      bwBounds.y + this.hairLowerBounds,
+      bwBounds.width,
+      0
+    );
+    this.cropCam.setScroll(
+      color.getBounds().x,
+      bwBounds.y + this.hairLowerBounds
+    );
 
     this.load.on('progress', this.onLoadProgress, this);
     this.load.on('complete', this.onLoadComplete, this);
-  }
-
-  create() {
-    this.scene.launch('Clouds');
-    this.scene.start('Title');
   }
 
   onLoadProgress(progress) {
@@ -128,8 +105,22 @@ class Boot extends Phaser.Scene {
   }
 
   onLoadComplete(loader, totalComplete, totalFailed) {
+    WebFont.load({
+      active: () => this.loaded = true,
+      custom: {
+        families: ['Akbar'],
+        urls: ['assets/fonts/Akbar.css'],
+      },
+    });
     console.debug('completed: ', totalComplete);
     console.debug('failed: ', totalFailed);
+  }
+
+  update() {
+    if (this.loaded) {
+      this.scene.launch('Clouds');
+      this.scene.start('Title');
+    }
   }
 }
 

@@ -14,7 +14,6 @@ const config = {
   width: window.innerWidth,
   height: window.innerHeight,
   loader: {
-    path: 'assets/img/',
     crossOrigin: true,
   },
   backgroundColor: GREY_SUIT,
