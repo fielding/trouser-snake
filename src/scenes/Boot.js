@@ -66,6 +66,19 @@ class Boot extends Phaser.Scene {
           frameWidth: 250,
           frameHeight: 200,
         },
+      }) // Artificially inflating loading time while working on preloader
+      .setPath()
+      .image({
+        key: 'preload-testing',
+        url: 'https://justfielding.com/stash/media/queenpop.png',
+      })
+      .image({
+        key: 'preload-testing2',
+        url: 'https://justfielding.com/stash/media/queenpop2.png',
+      })
+      .image({
+        key: 'preload-testing3',
+        url: 'https://justfielding.com/stash/media/queenpop3.png',
       });
 
     const { width, height } = this.sys.game.config;
