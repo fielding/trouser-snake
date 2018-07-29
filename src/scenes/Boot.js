@@ -1,3 +1,5 @@
+import { NERO } from '../constants/colors.js';
+
 class Boot extends Phaser.Scene {
   constructor() {
     super({
@@ -5,6 +7,11 @@ class Boot extends Phaser.Scene {
       active: true,
       pack: {
         files: [
+          {
+            type: 'image',
+            key: 'loading-background',
+            url: 'assets/img/loading-background.png',
+          },
           {
             type: 'image',
             key: 'loading-marge-bw',
@@ -83,12 +90,48 @@ class Boot extends Phaser.Scene {
 
     const { width, height } = this.sys.game.config;
     const scale = Math.min(width / 3840, height / 2160);
+
+    const offsetX = width - (3840 * scale);
+    const offsetY = height - (2160 * scale);
+    const adjustX = x => (x * scale) + (offsetX / 2);
+    const adjustY = y => (y * scale) + (offsetY / 2);
+
+    const margeOffsetX = (35 / 3840) * width;
+    const margeOffsetY = (112 / 2160) * height;
+
+    const background = this.add
+      .image(width / 2, height / 2, 'loading-background')
+      .setScale(scale);
     const bw = this.add
-      .image(width / 3, height / 2, 'loading-marge-bw')
+      .image((width / 2) + margeOffsetX, height / 2 - margeOffsetY, 'loading-marge-bw')
       .setScale(scale);
     const color = this.add
-      .image(-100, height / 2, 'loading-marge-color')
+      .image(-100, height / 2 - margeOffsetY, 'loading-marge-color')
       .setScale(scale);
+
+    const loadingTextStyle = {
+      fontFamily: 'Avenir Next Condensed',
+      fontSize: 144 * scale,
+      color: NERO,
+      fontStyle: 'bold',
+    };
+
+    this.loadedText = this.add
+      .text(adjustX(1213.6), adjustY(681.05), '0', loadingTextStyle)
+      .setOrigin(0.5);
+
+    this.totalText = this.add
+      .text(adjustX(1213.6), adjustY(1425.05), '0', loadingTextStyle)
+      .setOrigin(0.5);
+
+    this.percentText1 = this.add
+      .text(adjustX(2635.6), adjustY(681.05), '0', loadingTextStyle)
+      .setOrigin(0.5);
+
+    this.percentText2 = this.add
+      .text(adjustX(2625.6), adjustY(1425.05), '0', loadingTextStyle)
+      .setOrigin(0.5);
+
 
     this.hairLowerBounds = 606 * scale;
     const bwBounds = bw.getBounds();
@@ -114,19 +157,30 @@ class Boot extends Phaser.Scene {
     this.cropCam.setPosition(this.cropCam.x, this.cropCam.y - change);
     this.cropCam.setScroll(this.cropCam.scrollX, this.cropCam.scrollY - change);
     this.progress = progress;
+    this.loadedText.setText(this.load.totalComplete);
+    this.totalText.setText(this.load.totalToLoad);
+    this.percentText1.setText(Math.round(progress * 100));
+    this.percentText2.setText(Math.round(progress * 100));
+
     console.debug(`${Math.round(progress * 100)}%`);
+    console.debug(this.percentText1.getBounds());
   }
 
   onLoadComplete(loader, totalComplete, totalFailed) {
     WebFont.load({
       active: () => this.loaded = true,
+      google: {
+        families: ['Open Sans Condensed:700'],
+      },
       custom: {
         families: ['Akbar'],
         urls: ['assets/fonts/Akbar.css'],
       },
     });
-    console.debug('completed: ', totalComplete);
+    this.loadedText.setText(totalComplete);
+    console.debug('loaded: ', totalComplete);
     console.debug('failed: ', totalFailed);
+    console.debug(this.percentText1.getBounds());
   }
 
   update() {
