@@ -186,7 +186,9 @@ class Boot extends Phaser.Scene {
 
   update() {
     if (this.loaded) {
+      this.events.off('resize');
       this.scene.launch('Clouds');
+      this.cameras.remove(this.cropCam);
       this.scene.start('Title');
     }
   }
