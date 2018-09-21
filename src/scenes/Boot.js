@@ -1,4 +1,4 @@
-import { NERO } from '../constants/colors.js';
+import { NERO, GREY_SUIT } from '../constants/colors.js';
 
 class Boot extends Phaser.Scene {
   constructor() {
@@ -88,6 +88,7 @@ class Boot extends Phaser.Scene {
         url: 'https://justfielding.com/stash/media/queenpop3.png',
       });
 
+    this.cameras.main.setBackgroundColor(GREY_SUIT);
     const { width, height } = this.sys.game.config;
     const scale = Math.min(width / 3840, height / 2160);
 
