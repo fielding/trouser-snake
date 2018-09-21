@@ -17,7 +17,8 @@ class Interface extends Phaser.Scene {
 
     this.scene
       .launch(pinup)
-      .launch(board);
+      .launch(board)
+      .bringToTop();
 
     const scale = Math.min(
       this.sys.game.config.width / 3840,
@@ -78,10 +79,6 @@ class Interface extends Phaser.Scene {
     } else {
       this.pause()
     }
-  }
-
-  toggleMenu() {
-    // menu code
   }
 
   setScoreDisplay(score) {

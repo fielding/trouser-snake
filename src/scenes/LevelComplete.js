@@ -8,9 +8,6 @@ class LevelComplete extends Phaser.Scene {
     });
   }
 
-  preload() {
-  }
-
   create() {
     this.scene.setVisible(false, 'Interface');
     this.scene.setVisible(false, 'Pinup');

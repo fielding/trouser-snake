@@ -1,4 +1,9 @@
-import { SNAKE_LENGTH, GRID_COLUMNS, GRID_ROWS, GRID_SIZE } from '../constants/settings.js'
+import {
+  SNAKE_LENGTH,
+  GRID_COLUMNS,
+  GRID_ROWS,
+  GRID_SIZE,
+} from '../constants/settings.js';
 
 export class Snake {
   constructor(scene, x, y) {
@@ -80,7 +85,11 @@ export class Snake {
   }
 
   hitSelf() {
-    return Phaser.Actions.GetFirst(this.body.getChildren(), { x: this.position.x, y: this.position.y }, 1);
+    return Phaser.Actions.GetFirst(
+      this.body.getChildren(),
+      { x: this.position.x, y: this.position.y },
+      1
+    );
   }
 
   grow() {
@@ -94,6 +103,4 @@ export class Snake {
     }
     return false;
   }
-
-
 }

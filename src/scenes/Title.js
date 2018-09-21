@@ -8,8 +8,6 @@ class Title extends Phaser.Scene {
     });
   }
 
-  preload() {}
-
   create() {
     const scale = Math.min(
       this.sys.game.config.width / 3840,
@@ -45,14 +43,12 @@ class Title extends Phaser.Scene {
       .setOrigin(0.5);
 
     this.input.manager.enabled = true;
-    this.input.keyboard.on('keydown', event => {
-      this.scene.start('Interface')
+    this.input.keyboard.on('keydown', () => {
+      this.scene.start('Interface');
     });
 
     this.events.on('resize', this.resize, this);
   }
-
-  update() {}
 
   resize(
     width = this.sys.game.config.width,
@@ -67,11 +63,8 @@ class Title extends Phaser.Scene {
     this.title.setY(height / 4);
 
     this.pressToPlay.setFontSize(144 * scale);
-    this.pressToPlay.setX(width/ 2);
+    this.pressToPlay.setX(width / 2);
     this.pressToPlay.setY(height / 2.5);
-
-
-
   }
 }
 
