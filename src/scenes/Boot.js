@@ -181,7 +181,7 @@ class Boot extends Phaser.Scene {
     this.loadedText.setText(totalComplete);
     console.debug('loaded: ', totalComplete);
     console.debug('failed: ', totalFailed);
-    console.debug(this.percentText1.getBounds());
+    this.bw.setTexture('loading-marge-color');
   }
 
   update() {
