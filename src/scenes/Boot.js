@@ -100,14 +100,14 @@ class Boot extends Phaser.Scene {
     const margeOffsetX = (35 / 3840) * width;
     const margeOffsetY = (112 / 2160) * height;
 
-    const background = this.add
+    this.background = this.add
       .image(width / 2, height / 2, 'loading-background')
       .setScale(scale);
-    const bw = this.add
-      .image((width / 2) + margeOffsetX, height / 2 - margeOffsetY, 'loading-marge-bw')
+    this.bw = this.add
+      .image((width / 2) + margeOffsetX, (height / 2) - margeOffsetY, 'loading-marge-bw')
       .setScale(scale);
-    const color = this.add
-      .image(-100, height / 2 - margeOffsetY, 'loading-marge-color')
+   this.color = this.add
+      .image(-100, (height / 2) - margeOffsetY, 'loading-marge-color')
       .setScale(scale);
 
     const loadingTextStyle = {
@@ -135,7 +135,7 @@ class Boot extends Phaser.Scene {
 
 
     this.hairLowerBounds = 606 * scale;
-    const bwBounds = bw.getBounds();
+    const bwBounds = this.bw.getBounds();
 
     this.cropCam = this.cameras.add(
       bwBounds.x,
@@ -144,19 +144,20 @@ class Boot extends Phaser.Scene {
       0
     );
     this.cropCam.setScroll(
-      color.getBounds().x,
+      this.color.getBounds().x,
       bwBounds.y + this.hairLowerBounds
     );
 
     this.load.on('progress', this.onLoadProgress, this);
     this.load.on('complete', this.onLoadComplete, this);
+    this.events.on('resize', this.resize, this);
   }
 
   onLoadProgress(progress) {
-    const change = (progress - this.progress) * this.hairLowerBounds;
-    this.cropCam.setSize(this.cropCam.width, this.cropCam.height + change);
-    this.cropCam.setPosition(this.cropCam.x, this.cropCam.y - change);
-    this.cropCam.setScroll(this.cropCam.scrollX, this.cropCam.scrollY - change);
+    this.change = (progress - this.progress) * this.hairLowerBounds;
+    this.cropCam.setSize(this.cropCam.width, this.cropCam.height + this.change);
+    this.cropCam.setPosition(this.cropCam.x, this.cropCam.y - this.change);
+    this.cropCam.setScroll(this.cropCam.scrollX, this.cropCam.scrollY - this.change);
     this.progress = progress;
     this.loadedText.setText(this.load.totalComplete);
     this.totalText.setText(this.load.totalToLoad);
@@ -164,7 +165,6 @@ class Boot extends Phaser.Scene {
     this.percentText2.setText(Math.round(progress * 100));
 
     console.debug(`${Math.round(progress * 100)}%`);
-    console.debug(this.percentText1.getBounds());
   }
 
   onLoadComplete(loader, totalComplete, totalFailed) {
@@ -189,6 +189,60 @@ class Boot extends Phaser.Scene {
       this.scene.launch('Clouds');
       this.scene.start('Title');
     }
+  }
+
+  resize(
+    width = this.sys.game.config.width,
+    height = this.sys.game.config.height
+  ) {
+    this.cameras.main.setSize(width, height);
+
+    const scale = Math.min(width / 3840, height / 2160);
+
+    const offsetX = width - (3840 * scale);
+    const offsetY = height - (2160 * scale);
+    const adjustX = x => (x * scale) + (offsetX / 2);
+    const adjustY = y => (y * scale) + (offsetY / 2);
+
+    const margeOffsetX = (35 / 3840) * width;
+    const margeOffsetY = (112 / 2160) * height;
+
+    this.background
+      .setPosition(width / 2, height / 2)
+      setScale(scale);
+
+    this.bw
+      .setPosition((width / 2) + margeOffsetX, (height / 2) - margeOffsetY)
+      .setScale(scale);
+
+    this.color
+      .setPosition(-100, (height / 2) - margeOffsetY)
+      .setScale(scale);
+
+    this.loadedText
+      .setPosition(adjustX(1213.6), adjustY(681.05));
+
+    this.totalText
+      .setPosition(adjustX(1213.6), adjustY(1425.05));
+
+    this.percentText1
+      .setPosition(adjustX(2635.6), adjustY(681.05));
+
+    this.percentText2
+      .setPosition(adjustX(2635.6), adjustY(1425.05));
+
+    const hairLowerBounds = 606 * scale;
+    const bwBounds = this.bw.getBounds();
+
+    this.cropCam
+      .setPosition(bwBounds.x, (bwBounds.y + hairLowerBounds) - (hairLowerBounds * this.progress));
+    this.cropCam
+      .setScroll(
+        this.color.getBounds().x,
+        (bwBounds.y + hairLowerBounds) - (this.progress * hairLowerBounds)
+      );
+    this.cropCam
+      .setSize(bwBounds.width, this.progress * hairLowerBounds);
   }
 }
 
