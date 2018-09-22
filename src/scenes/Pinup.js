@@ -95,8 +95,6 @@ class Pinup extends Phaser.Scene {
 
   shutdown() {
     this.registry.events.off('changedata', this.updateData, this);
-    this.collected = this.add.group();
-    Phaser.Actions.SetVisible(this.pieces.getChildren(), false);
   }
 }
 
