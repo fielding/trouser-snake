@@ -86,9 +86,26 @@ class Interface extends Phaser.Scene {
     this.input.manager.enabled = true;
     this.input.keyboard.on('keydown_P', this.togglePause, this);
     this.input.keyboard.on('keydown_ESC', this.togglePause, this); // change this to toggleMenu
+    this.input.keyboard.on('keydown_C', this.levelComplete, this);
+    this.input.keyboard.on('keydown_G', this.gameOver, this);
 
     this.registry.events.on('changedata', this.updateData, this);
 
+  gameOver() {
+    if (this.scene.isActive('Board')) {
+      this.scene.stop('Board');
+      this.scene.stop('Pinup');
+      this.scene.launch('GameOver');
+    }
+  }
+
+  levelComplete() {
+    if (this.scene.isActive('Board')) {
+      this.scene.stop('Pinup');
+      this.scene.stop('Board');
+      this.scene.launch('LevelComplete');
+    }
+  }
   }
 
   pause() {
@@ -122,6 +139,11 @@ class Interface extends Phaser.Scene {
   updateData() {
     this.setScoreDisplay(this.registry.values.score);
     this.setLevelDisplay(this.registry.values.level);
+    if (this.registry.values.GameOver) {
+      this.gameOver();
+    } else if (this.registry.values.score >= 200) {
+      this.levelComplete();
+    }
   }
 }
 

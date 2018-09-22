@@ -51,6 +51,7 @@ class Pinup extends Phaser.Scene {
     Phaser.Actions.SetVisible(this.pieces.getChildren(), false);
 
     this.registry.events.on('changedata', this.updateData, this);
+    this.events.once('shutdown', this.shutdown, this);
   }
 
   showRandomPiece() {
@@ -78,23 +79,22 @@ class Pinup extends Phaser.Scene {
   }
 
   updateData(parent, key, data) {
-    if ((key === 'LevelComplete' || key === 'GameOver') && data === true) {
-      this.reset();
-    }
+    // if ((key === 'LevelComplete' || key === 'GameOver') && data === true) {
+    //   // this.reset();
+    // }
 
     if (
       key === 'score' &&
-      data <= 200 &&
-      this.registry.values.GameOver === false &&
-      this.registry.values.LevelComplete === false
+      data < 200 &&
+      data > 0 &&
+      this.registry.values.GameOver === false
     ) {
       this.showRandomPiece();
     }
   }
 
-  reset() {
-    console.debug('resetting pinup scene');
-    this.collected.clear();
+  shutdown() {
+    this.registry.events.off('changedata', this.updateData, this);
     this.collected = this.add.group();
     Phaser.Actions.SetVisible(this.pieces.getChildren(), false);
   }
