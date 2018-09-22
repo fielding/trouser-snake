@@ -6,6 +6,7 @@ import Interface from './scenes/Interface';
 import Board from './scenes/Board';
 import GameOver from './scenes/GameOver';
 import LevelComplete from './scenes/LevelComplete';
+import Pause from './scenes/Pause';
 import Pinup from './scenes/Pinup';
 import { GREY_SUIT } from './constants/colors';
 
