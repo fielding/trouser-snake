@@ -84,12 +84,13 @@ class Interface extends Phaser.Scene {
       .setOrigin(0)
       .setScale(scale);
     this.input.manager.enabled = true;
-    this.input.keyboard.on('keydown_P', this.togglePause, this);
-    this.input.keyboard.on('keydown_ESC', this.togglePause, this); // change this to toggleMenu
+    this.input.keyboard.on('keydown_P', this.pause, this);
+    this.input.keyboard.on('keydown_ESC', this.pause, this);
     this.input.keyboard.on('keydown_C', this.levelComplete, this);
     this.input.keyboard.on('keydown_G', this.gameOver, this);
 
     this.registry.events.on('changedata', this.updateData, this);
+  }
 
   gameOver() {
     if (this.scene.isActive('Board')) {
@@ -106,18 +107,45 @@ class Interface extends Phaser.Scene {
       this.scene.launch('LevelComplete');
     }
   }
+
+  quit() {
+    if (this.isPaused) {
+      this.isPaused = false;
+      this.scene.stop('Pause');
+    }
+
+    this.scene.stop('Pinup');
+    this.scene.stop('Board');
+    this.scene.start('Title');
+  }
+
+  restartLevel() {
+    if (this.isPaused) {
+      this.isPaused = false;
+      this.scene.stop('Pause');
+    }
+    this.scene.stop('Pinup');
+    this.scene.stop('Board');
+
+    this.scene.launch('Pinup');
+    this.scene.launch('Board');
+
   }
 
   pause() {
-    this.scene.pause('Board');
-    this.isPaused = true;
-    console.debug('pause');
+    if(!this.isPaused) {
+      this.scene.pause('Board');
+      this.isPaused = true;
+      this.scene.launch('Pause');
+    }
   }
 
   unpause() {
-    this.scene.resume('Board');
-    this.isPaused = false;
-    console.debug('unpause');
+    if(this.isPaused) {
+      this.scene.resume('Board');
+      this.isPaused = false;
+      this.scene.stop('Pause');
+    }
   }
 
   togglePause() {

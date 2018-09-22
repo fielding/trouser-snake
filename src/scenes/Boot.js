@@ -70,12 +70,52 @@ class Boot extends Phaser.Scene {
         key: 'interface',
         url: 'interface.png',
       })
+      .image({
+        key: 'pause',
+        url: 'pause.png',
+      })
+      .image({
+        key: 'resume',
+        url: 'resume.png',
+      })
+      .image({
+        key: 'restart',
+        url: 'restart.png',
+      })
+      .image({
+        key: 'quit',
+        url: 'quit.png',
+      })
+      .image({
+        key: 'resume-focused',
+        url: 'resume-focused.png',
+      })
+      .image({
+        key: 'restart-focused',
+        url: 'restart-focused.png',
+      })
+      .image({
+        key: 'quit-focused',
+        url: 'quit-focused.png',
+      })
+      .image({
+        key: 'resume-clicked',
+        url: 'resume-clicked.png',
+      })
+      .image({
+        key: 'restart-clicked',
+        url: 'restart-clicked.png',
+      })
+      .image({
+        key: 'quit-clicked',
+        url: 'quit-clicked.png',
+      })
       .spritesheet({
         key: 'pinup',
         url: 'pinup.png',
         frameConfig: {
-          frameWidth: 250,
-          frameHeight: 200,
+          frameWidth: 256,
+          frameHeight: 204.8,
         },
       }) // Artificially inflating loading time while working on preloader
       .setPath()
