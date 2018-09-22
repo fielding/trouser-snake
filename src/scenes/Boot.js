@@ -79,6 +79,11 @@ class Boot extends Phaser.Scene {
         },
       }) // Artificially inflating loading time while working on preloader
       .setPath()
+      .bitmapFont(
+        'timeliest',
+        'assets/fonts/bitmap/timeliest-toon-144.png',
+        'assets/fonts/bitmap/timeliest-toon-144.xml'
+      )
       .image({
         key: 'preload-testing',
         url: 'https://justfielding.com/stash/media/queenpop.png',

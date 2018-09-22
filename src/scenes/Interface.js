@@ -28,18 +28,7 @@ class Interface extends Phaser.Scene {
     );
 
     const scale = actualScale > 0.5 ? 1 : 0.5;
-      .text(
-        // this.sys.game.config.width / 3,
-        ((this.sys.game.config.width - 1000) / 3) * 2 + 750,
-        (this.sys.game.config.height - 500) / 4,
-        'score: 0',
-        {
-          fontFamily: 'Akbar',
-          fontSize: 144 * scale,
-          color: NERO,
-        }
-      )
-      .setOrigin(0.5);
+
     this.interface = this.add
       .image(0, 0, 'interface')
       .setScale(scale)
@@ -50,20 +39,50 @@ class Interface extends Phaser.Scene {
 
     this.registry.set('ui', {x: this.interface.x, y: this.interface.y, width: this.interface.width, height: this.interface.height});
 
-    this.level = this.add
-      .text(
-        // this.sys.game.config.width / 3,
-        (this.sys.game.config.width - 1000) / 3 + 250,
-        (this.sys.game.config.height - 500) / 4,
-        'level: 1',
-        {
-          fontFamily: 'Akbar',
-          fontSize: 144 * scale,
-          color: NERO,
-        }
-      )
-      .setOrigin(0.5);
 
+    this.levelLabel = this.add
+      .bitmapText(
+        this.interface.x + (this.interface.width * scale * 0.26) - (80 / 2 * scale),
+        this.interface.y,
+        'timeliest',
+        'LEVEL ',
+        144
+      )
+      .setOrigin(0.5)
+      .setScale(scale);
+
+    this.levelValue = this.add
+      .bitmapText(
+        this.levelLabel.x + this.levelLabel.width - this.levelLabel.width / 2,
+        this.levelLabel.y - this.levelLabel.height / 2,
+        'timeliest',
+        '1',
+        144
+      )
+      .setOrigin(0)
+      .setScale(scale);
+
+   this.scoreLabel = this.add
+      .bitmapText(
+        this.interface.x + (this.interface.width * scale * 0.7365451389) - (200 / 2 * scale),
+        this.interface.y,
+        'timeliest',
+        'SCORE ',
+        144
+      )
+      .setOrigin(0.5)
+      .setScale(scale);
+
+    this.scoreValue = this.add
+      .bitmapText(
+        this.scoreLabel.x + this.scoreLabel.width - this.scoreLabel.width / 2,
+        this.scoreLabel.y - this.scoreLabel.height / 2,
+        'timeliest',
+        '0',
+        144
+      )
+      .setOrigin(0)
+      .setScale(scale);
     this.input.manager.enabled = true;
     this.input.keyboard.on('keydown_P', this.togglePause, this);
     this.input.keyboard.on('keydown_ESC', this.togglePause, this); // change this to toggleMenu
@@ -93,11 +112,11 @@ class Interface extends Phaser.Scene {
   }
 
   setScoreDisplay(score) {
-    this.score.setText(`score: ${score}`);
+    this.scoreValue.setText(score);
   }
 
   setLevelDisplay(level) {
-    this.level.setText(`level: ${level}`);
+    this.levelValue.setText(level);
   }
 
   updateData() {
