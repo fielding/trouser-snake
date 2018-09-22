@@ -27,7 +27,7 @@ class Interface extends Phaser.Scene {
       height / 2160
     );
 
-    this.score = this.add
+    const scale = actualScale > 0.5 ? 1 : 0.5;
       .text(
         // this.sys.game.config.width / 3,
         ((this.sys.game.config.width - 1000) / 3) * 2 + 750,
