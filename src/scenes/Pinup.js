@@ -10,26 +10,40 @@ class Pinup extends Phaser.Scene {
   }
 
   create() {
+    //this.scene.moveBelow('Interface');
+
+    // replace with registy scale factor
+    const actualScale = Math.min(
+      this.sys.game.config.width / 3840,
+      this.sys.game.config.height / 2160
+    );
+
+    const scale = actualScale > 0.5 ? 1 : 0.5;
+
     this.cameras.main.setViewport(
-      (window.innerWidth - 1000) / 3,
-      window.innerHeight / 2 - 250,
-      500,
-      500
+      this.registry.values.ui.x + (this.registry.values.ui.width * 0.2638888889 * scale) - (1024 * scale / 2),
+      this.registry.values.ui.y + (this.registry.values.ui.height / 2 * scale) - (1024 * scale / 2),
+      // 875 * scale,
+      // 580 * scale,
+      1024 * scale,
+      1024 * scale
     );
 
     const placeholder = this.add
-      .image(250, 250, 'skb-placeholder')
-      .setScale(0.5);
+      .image(0, 0, 'skb-placeholder')
+      .setScale(scale)
+      .setOrigin(0);
 
     let frame = 0;
+    // if(this.collected) this.collected.clear()
     this.collected = this.add.group();
     this.pieces = this.add.group();
     for (let i = 0; i < 5; i++) {
       for (let j = 0; j < 4; j++) {
         this.pieces
-          .create(j * 125, i * 100, 'pinup', frame)
+          .create(j * ((1024 * scale) / 4) , i * ((1024 * scale) / 5), 'pinup', frame)
           .setOrigin(0, 0)
-          .setScale(0.5);
+          .setScale(scale);
         frame++;
       }
     }

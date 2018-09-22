@@ -95,6 +95,8 @@ class Boot extends Phaser.Scene {
     this.cameras.main.setBackgroundColor(GREY_SUIT);
     const { width, height } = this.sys.game.config;
     const scale = Math.min(width / 3840, height / 2160);
+    this.registry.set('actualScale', Math.min(width / 3840, height / 2160));
+    this.registry.set('scale', this.registry.values.actualScale > 0.5 ? 1 : 0.5);
 
     const offsetX = width - (3840 * scale);
     const offsetY = height - (2160 * scale);

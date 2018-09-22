@@ -16,37 +16,39 @@ class Board extends Phaser.Scene {
     }
     this.registry.set('score', 0);
     this.registry.set('GameOver', false);
-    this.registry.set('LevelComplete', false);
+    // this.registry.set('LevelComplete', false);
 
-    this.cameras.main.setViewport(
-      ((window.innerWidth - 1000) / 3) * 2 + 500,
-      window.innerHeight / 2 - 250,
-      500,
-      500
-    );
+    const { width, height } = this.sys.game.config;
+    const actualScale = Math.min(width / 3840, height / 2160);
+    const scale = actualScale > 0.5 ? 1 : 0.5;
 
-    const board = this.add
-      .tileSprite(0, 0, 500, 500, 'board-pattern')
-      .setOrigin(0, 0);
+    this.cameras.main
+      .setViewport(
+        this.registry.values.ui.x + (this.registry.values.ui.width * 0.7365451389 * scale) - (1024 * scale / 2),
+        this.registry.values.ui.y + (this.registry.values.ui.height / 2 * scale) - (1024 * scale / 2),
+        1024 * scale,
+        1024 * scale
+      )
+      .setOrigin(0);
 
-    this.snake = new Snake(this, 10, 10);
+    this.board = this.add
+      .tileSprite(0, 0, 1024, 1024, 'board-pattern')
+      .setOrigin(0, 0)
+      .setScale(scale);
+
+
+    this.snake = new Snake(this, 16, 16);
     this.piece = new PinupPiece(this, this.getRandomEmptyPosition());
+    this.piece.setScale(scale);
+
+    this.events.on('resize', this.resize, this);
   }
 
   update(time) {
-    if (!this.snake.alive) {
-      this.registry.set('GameOver', true);
-      this.scene.start('GameOver');
-    } else if (this.registry.values.score >= 200) {
-      this.registry.set('LevelComplete', true);
-      this.registry.values.level += 1;
-      this.scene.start('LevelComplete');
-    } else {
-      if (this.snake.update(time)) {
-        this.checkCollision();
-      }
-      this.snake.handleInput();
+    if (this.snake.update(time)) {
+      this.checkCollision();
     }
+      this.snake.handleInput();
   }
 
   collided(a, b) {
@@ -62,10 +64,12 @@ class Board extends Phaser.Scene {
   }
 
   isCellEmpty(cell) {
+    const actualGridSize = GRID_SIZE * this.registry.values.scale;
     const adjustedCell = {
-      x: cell.x * GRID_SIZE + (GRID_SIZE / 2),
-      y: cell.y * GRID_SIZE + (GRID_SIZE / 2)
+      x: cell.x * actualGridSize + (actualGridSize / 2),
+      y: cell.y * actualGridSize + (actualGridSize / 2)
     }
+
     if (this.snake != undefined && this.snake.body.getChildren().some(segment => this.collided(segment, adjustedCell))) {
       return false;
     }
@@ -90,6 +94,16 @@ class Board extends Phaser.Scene {
     return this.getRandomEmptyPosition();
   }
 
-}
+  resize(
+    width = this.sys.game.config.width,
+    height = this.sys.game.config.height
+  ) {
+    console.log('resizing board');
+    // this.cameras.resize(width, height);
+    const scale = Math.min(width / 3840, height / 2160);
 
+    this.cameras.main.setSize(1024 * scale, 1024 * scale);
+    // this.board.setSize(1351 * scale, 1351 * scale);
+  }
+}
 export default Board;
