@@ -1,4 +1,5 @@
 import 'phaser';
+import { SceneWatcherPlugin } from 'phaser-plugin-scene-watcher';
 import Boot from './scenes/Boot';
 import Clouds from './scenes/Clouds';
 import Title from './scenes/Title';
@@ -23,6 +24,20 @@ const config = {
     arcade: {
       debug: false,
     },
+  },
+  plugins: {
+    global: [
+      {
+        key: 'SceneWatcherPlugin',
+        plugin: Phaser.Plugins.SceneWatcherPlugin,
+        start: true,
+      },
+    ],
+  },
+  callbacks: {
+    postBoot: function (game) {
+      game.plugins.get('SceneWatcherPlugin').watchAll();
+    }
   },
   scene: [Boot, Clouds, Title, Interface, Board, Pinup, GameOver, LevelComplete, Pause],
 };
