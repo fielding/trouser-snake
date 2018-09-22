@@ -19,11 +19,13 @@
   },
   "homepage": "https://github.com/photonstorm/phaser3-project-template#readme",
   "devDependencies": {
-    "webpack-dev-server": "^2.11.0",
+    "phaser-plugin-scene-watcher": "^1.0.1",
+    "raw-loader": "^0.5.1",
     "webpack": "^3.4.1",
-    "raw-loader": "^0.5.1"
+    "webpack-dev-server": "^2.11.0"
   },
   "dependencies": {
-    "phaser": "github:photonstorm/phaser#master"
+    "phaser": "github:photonstorm/phaser#master",
+    "phaser3-nineslice": "^0.3.7"
   }
 }
