@@ -66,6 +66,10 @@ class Boot extends Phaser.Scene {
         key: 'skb-placeholder',
         url: 'skb-placeholder.png',
       })
+      .image({
+        key: 'interface',
+        url: 'interface.png',
+      })
       .spritesheet({
         key: 'pinup',
         url: 'pinup.png',

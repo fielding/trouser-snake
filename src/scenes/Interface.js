@@ -20,9 +20,11 @@ class Interface extends Phaser.Scene {
       .launch(board)
       .bringToTop();
 
-    const scale = Math.min(
-      this.sys.game.config.width / 3840,
-      this.sys.game.config.height / 2160
+    const { width, height } = this.sys.game.config;
+
+    const actualScale = Math.min(
+      width / 3840,
+      height / 2160
     );
 
     this.score = this.add
@@ -38,6 +40,15 @@ class Interface extends Phaser.Scene {
         }
       )
       .setOrigin(0.5);
+    this.interface = this.add
+      .image(0, 0, 'interface')
+      .setScale(scale)
+      .setOrigin(0);
+
+    this.interface
+      .setPosition((width - this.interface.width * scale) / 2, (height - this.interface.height * scale) / 2);
+
+    this.registry.set('ui', {x: this.interface.x, y: this.interface.y, width: this.interface.width, height: this.interface.height});
 
     this.level = this.add
       .text(
