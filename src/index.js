@@ -1,5 +1,6 @@
 import 'phaser';
 import { SceneWatcherPlugin } from 'phaser-plugin-scene-watcher';
+import { Plugin as NineSlicePlugin } from 'phaser3-nineslice';
 import Boot from './scenes/Boot';
 import Clouds from './scenes/Clouds';
 import Intro from './scenes/Intro';
@@ -33,6 +34,7 @@ const config = {
         plugin: Phaser.Plugins.SceneWatcherPlugin,
         start: true,
       },
+      NineSlicePlugin.DefaultCfg,
     ],
   },
   // callbacks: {
