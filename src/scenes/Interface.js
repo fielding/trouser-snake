@@ -9,6 +9,7 @@ class Interface extends Phaser.Scene {
 
     this.isPaused = false;
     this.currentScene;
+    this.level;
   }
 
   setCurrentScene(scene) {
@@ -16,6 +17,9 @@ class Interface extends Phaser.Scene {
   }
 
   create() {
+    if (this.registry.values.level === undefined) {
+      this.registry.set('level', 1);
+    }
 
     this.music = this.sound.add('intro');
     this.music.play();

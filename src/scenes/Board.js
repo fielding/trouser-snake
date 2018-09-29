@@ -11,9 +11,6 @@ class Board extends Phaser.Scene {
   }
 
   create() {
-    if(this.registry.values.level === undefined) {
-      this.registry.set('level', 1);
-    }
     this.registry.set('score', 0);
     this.registry.set('GameOver', false);
     // this.registry.set('LevelComplete', false);
