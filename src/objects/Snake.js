@@ -34,7 +34,7 @@ export class Snake {
     this.head = this.body
       .create(this.position.x, this.position.y, 'snake-head')
       .setScale(scale)
-      // .setDisplayOrigin(17);
+      .setDepth(10);
 
     for (let i = 1; i < SNAKE_LENGTH; i += 1) {
       this.body
