@@ -8,17 +8,25 @@ class Interface extends Phaser.Scene {
     });
 
     this.isPaused = false;
+    this.currentScene;
+  }
+
+  setCurrentScene(scene) {
+    this.currentScene = this.scene.get(scene);
   }
 
   create() {
 
-    const pinup = this.scene.get('Pinup');
-    const board = this.scene.get('Board');
+    this.music = this.sound.add('intro');
+    this.music.play();
 
     this.scene
-      .launch(pinup)
-      .launch(board)
-      .bringToTop();
+      .launch('Clouds')
+      .bringToTop()
+      .launch('Intro')
+      .setVisible(false);
+
+    this.setCurrentScene('Intro');
 
     const { width, height } = this.sys.game.config;
 
@@ -117,8 +125,18 @@ class Interface extends Phaser.Scene {
     this.scene.stop('Pinup');
     this.scene.stop('Board');
     this.scene.start('Title');
+  intro() {
+    this.scene.setVisible(false);
+    this.scene.launch('Intro');
+    this.setCurrentScene('Intro');
   }
 
+  showMenu() {
+    this.scene.stop(this.currentScene);
+    this.scene.setVisible(false);
+    this.scene.launch('MainMenu');
+    this.setCurrentScene('MainMenu');
+  }
   restartLevel() {
     if (this.isPaused) {
       this.isPaused = false;

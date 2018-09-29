@@ -71,44 +71,76 @@ class Boot extends Phaser.Scene {
         url: 'interface.png',
       })
       .image({
+        key: 'menu',
+        url: 'menu.png',
+      })
+      .image({
         key: 'pause',
         url: 'pause.png',
+      })
+      .image({
+        key: 'play',
+        url: 'play.png',
+      })
+      .image({
+        key: 'play-clicked',
+        url: 'play-clicked.png',
+      })
+      .image({
+        key: 'play-focused',
+        url: 'play-focused.png',
+      })
+      .image({
+        key: 'about',
+        url: 'about.png',
+      })
+      .image({
+        key: 'about-clicked',
+        url: 'about-clicked.png',
+      })
+      .image({
+        key: 'about-focused',
+        url: 'about-focused.png',
       })
       .image({
         key: 'resume',
         url: 'resume.png',
       })
       .image({
-        key: 'restart',
-        url: 'restart.png',
-      })
-      .image({
-        key: 'quit',
-        url: 'quit.png',
+        key: 'resume-clicked',
+        url: 'resume-clicked.png',
       })
       .image({
         key: 'resume-focused',
         url: 'resume-focused.png',
       })
       .image({
-        key: 'restart-focused',
-        url: 'restart-focused.png',
-      })
-      .image({
-        key: 'quit-focused',
-        url: 'quit-focused.png',
-      })
-      .image({
-        key: 'resume-clicked',
-        url: 'resume-clicked.png',
+        key: 'restart',
+        url: 'restart.png',
       })
       .image({
         key: 'restart-clicked',
         url: 'restart-clicked.png',
       })
       .image({
+        key: 'restart-focused',
+        url: 'restart-focused.png',
+      })
+      .image({
+        key: 'quit',
+        url: 'quit.png',
+      })
+      .image({
         key: 'quit-clicked',
         url: 'quit-clicked.png',
+      })
+      .image({
+        key: 'quit-focused',
+        url: 'quit-focused.png',
+      })
+      .image({
+        key: 'title',
+        url: 'title.png',
       })
       .spritesheet({
         key: 'pinup',
@@ -117,25 +149,30 @@ class Boot extends Phaser.Scene {
           frameWidth: 256,
           frameHeight: 204.8,
         },
-      }) // Artificially inflating loading time while working on preloader
+      })
       .setPath()
       .bitmapFont(
         'timeliest',
         'assets/fonts/bitmap/timeliest-toon-144.png',
         'assets/fonts/bitmap/timeliest-toon-144.xml'
       )
-      .image({
-        key: 'preload-testing',
-        url: 'https://justfielding.com/stash/media/queenpop.png',
-      })
-      .image({
-        key: 'preload-testing2',
-        url: 'https://justfielding.com/stash/media/queenpop2.png',
-      })
-      .image({
-        key: 'preload-testing3',
-        url: 'https://justfielding.com/stash/media/queenpop3.png',
-      });
+      .audio(
+        'intro',
+        'assets/audio/intro.m4a'
+      )
+      // Artificially inflating loading time while working on preloader
+      // .image({
+      //   key: 'preload-testing',
+      //   url: 'https://justfielding.com/stash/media/queenpop.png',
+      // })
+      // .image({
+      //   key: 'preload-testing2',
+      //   url: 'https://justfielding.com/stash/media/queenpop2.png',
+      // })
+      // .image({
+      //   key: 'preload-testing3',
+      //   url: 'https://justfielding.com/stash/media/queenpop3.png',
+      // });
 
     this.cameras.main.setBackgroundColor(GREY_SUIT);
     const { width, height } = this.sys.game.config;
@@ -238,9 +275,8 @@ class Boot extends Phaser.Scene {
   update() {
     if (this.loaded) {
       this.events.off('resize');
-      this.scene.launch('Clouds');
       this.cameras.remove(this.cropCam);
-      this.scene.start('Title');
+      this.scene.start('Interface');
     }
   }
 

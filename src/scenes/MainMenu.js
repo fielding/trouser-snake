@@ -1,9 +1,9 @@
 import { NERO } from '../constants/colors.js';
 
-class Pause extends Phaser.Scene {
+class MainMenu extends Phaser.Scene {
   constructor() {
     super({
-      key: 'Pause',
+      key: 'MainMenu',
       active: false,
     });
 
@@ -49,14 +49,15 @@ class Pause extends Phaser.Scene {
       })
   }
 
-  createMenu(texture, x, y, menuOptions) {
+  createMenu(texture, x, y, items) {
     const image = this.add
       .image(0, 0, texture)
       .setScale(this.scale)
       .setOrigin(0.5)
       .setName('image');
 
-    const options = this.createMenuOptions(texture.x, texture.y, menuOptions);
+    const options = this.createMenuOptions(texture.x, texture.y, items);
+
     options.setName('options');
 
     const menu = this.add.container(x, y)
@@ -66,6 +67,9 @@ class Pause extends Phaser.Scene {
 
     return menu;
   }
+
+
+
 
   createMenuOptions(x, y, items) {
     const options = this.add.container(x, y);
@@ -85,7 +89,6 @@ class Pause extends Phaser.Scene {
 
   create() {
     this.scene.bringToTop();
-    this.cameras.main.setBackgroundColor('rgba(0,0,0,0.66)');
 
     const { width, height } = this.sys.game.config;
     const actualScale = Math.min(
@@ -94,37 +97,50 @@ class Pause extends Phaser.Scene {
     );
     this.scale = actualScale > 0.5 ? 1 : 0.5;
 
-    this.resume = this.createButton('resume');
-    this.resume.select = () => {
-      this.bounceOut(this.menu, () => this.scene.get('Interface').unpause());
-    }
+    this.play = this.createButton('play');
+    this.play.select = () => {
+      this.bounceOut(this.menu, () => this.scene.get('Interface').startPlaying());
+    };
 
-    this.restart = this.createButton('restart');
-    this.restart.select = () => {
-      this.bounceOut(this.menu, () => this.scene.get('Interface').restartLevel());
-    }
+    this.about = this.createButton('about');
+    this.about.select = () => {
+      console.debug('about');
+    };
 
-    this.quit = this.createButton('quit');
-    this.quit.select = () => {
-      this.bounceOut(this.menu, () => this.scene.get('Interface').quit());
-    }
-
-    this.menu = this.createMenu('pause', width / 2, height / 2, [this.resume, this.restart, this.quit]);
+    this.menu = this.createMenu('menu', width / 2, height / 2, [this.play, this.about]);
 
     this.bounceIn(this.menu);
-
     this.cursors = this.input.keyboard.createCursorKeys();
+
     this.input.keyboard.on('keydown_ENTER', () => {
-      if(!this.transitioning) {
+      if (!this.transitioning) {
         this.focused.setTexture(`${this.focused.name}-clicked`);
       }
     }, this);
     this.input.keyboard.on('keyup_ENTER', () => {
-      if(!this.transitioning) {
+      if (!this.transitioning) {
         this.focused.setTexture(`${this.focused.name}-focused`);
         this.focused.select();
       }
     }, this);
+  }
+
+  update() {
+    const {up, down} = this.cursors;
+    const menuOptions = this.menu.getByName('options');
+    if (!this.transitioning) {
+      if(Phaser.Input.Keyboard.JustDown(down)) {
+        this.focused.setData('focused', false);
+        this.focused = menuOptions.getAt(Phaser.Math.Wrap(menuOptions.getIndex(this.focused) + 1, 0, menuOptions.count()));
+        this.focused.setData('focused', true);
+      }
+
+      if(Phaser.Input.Keyboard.JustDown(up)) {
+        this.focused.setData('focused', false);
+        this.focused = menuOptions.getAt(Phaser.Math.Wrap(menuOptions.getIndex(this.focused) - 1, 0, menuOptions.count()));
+        this.focused.setData('focused', true);
+      }
+    }
   }
 
   bounceIn(targets) {
@@ -139,11 +155,11 @@ class Pause extends Phaser.Scene {
       targets,
       scaleX: 1,
       scaleY: 1,
-      duration: 400,
+      duration: 750,
       repeat: 0,
       ease: 'Bounce.easeOut',
       onComplete: () => this.transitioning = false,
-    });
+    })
   }
 
   bounceOut(targets, onComplete) {
@@ -152,30 +168,11 @@ class Pause extends Phaser.Scene {
       targets,
       scaleX: 0,
       scaleY: 0,
-      duration: 400,
+      duration: 750,
       repeat: 0,
       ease: 'Bounce.easeIn',
-      onComplete,
+      onComplete
     });
-  }
-
-  update() {
-    const {up, down} = this.cursors;
-    const menuOptions = this.menu.getByName('options');
-
-    if(!this.transitioning) {
-      if(Phaser.Input.Keyboard.JustDown(down)) {
-        this.focused.setData('focused', false);
-        this.focused = menuOptions.getAt(Phaser.Math.Wrap(menuOptions.getIndex(this.focused) + 1, 0, 3));
-        this.focused.setData('focused', true);
-      }
-
-      if(Phaser.Input.Keyboard.JustDown(up)) {
-        this.focused.setData('focused', false);
-        this.focused = menuOptions.getAt(Phaser.Math.Wrap(menuOptions.getIndex(this.focused) - 1, 0, 3));
-        this.focused.setData('focused', true);
-      }
-    }
   }
 
   resize(
@@ -196,4 +193,4 @@ class Pause extends Phaser.Scene {
   }
 }
 
-export default Pause;
+export default MainMenu;
