@@ -10,8 +10,6 @@ class Pinup extends Phaser.Scene {
   }
 
   create() {
-    //this.scene.moveBelow('Interface');
-
     // replace with registy scale factor
     const actualScale = Math.min(
       this.sys.game.config.width / 3840,
@@ -38,10 +36,22 @@ class Pinup extends Phaser.Scene {
     // if(this.collected) this.collected.clear()
     this.collected = this.add.group();
     this.pieces = this.add.group();
+
+
+    // temp code to reuse the 4 pinups over and over until levels are done
+    let adjustedLevel = this.registry.values.level % 4;
+    adjustedLevel = adjustedLevel === 0 ? 4 : adjustedLevel;
+    console.debug(adjustedLevel);
+
     for (let i = 0; i < 5; i++) {
       for (let j = 0; j < 4; j++) {
         this.pieces
-          .create(j * ((1024 * scale) / 4) , i * ((1024 * scale) / 5), 'pinup', frame)
+          .create(
+            j * ((1024 * scale) / 4),
+            i * ((1024 * scale) / 5),
+            `pinup-${adjustedLevel}`,
+            frame
+          )
           .setOrigin(0, 0)
           .setScale(scale);
         frame++;

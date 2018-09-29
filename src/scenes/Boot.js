@@ -147,8 +147,32 @@ class Boot extends Phaser.Scene {
         url: 'title.png',
       })
       .spritesheet({
-        key: 'pinup',
-        url: 'pinup.png',
+        key: 'pinup-1',
+        url: 'pinup-1.png',
+        frameConfig: {
+          frameWidth: 256,
+          frameHeight: 204.8,
+        },
+      })
+      .spritesheet({
+        key: 'pinup-2',
+        url: 'pinup-2.png',
+        frameConfig: {
+          frameWidth: 256,
+          frameHeight: 204.8,
+        },
+      })
+      .spritesheet({
+        key: 'pinup-3',
+        url: 'pinup-3.png',
+        frameConfig: {
+          frameWidth: 256,
+          frameHeight: 204.8,
+        },
+      })
+      .spritesheet({
+        key: 'pinup-4',
+        url: 'pinup-4.png',
         frameConfig: {
           frameWidth: 256,
           frameHeight: 204.8,
