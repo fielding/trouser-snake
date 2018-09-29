@@ -27,10 +27,8 @@ class Interface extends Phaser.Scene {
     this.scene
       .launch('Clouds')
       .bringToTop()
-      .launch('Intro')
-      .setVisible(false);
 
-    this.setCurrentScene('Intro');
+    this.intro();
 
     const { width, height } = this.sys.game.config;
 
@@ -95,6 +93,7 @@ class Interface extends Phaser.Scene {
       )
       .setOrigin(0)
       .setScale(scale);
+
     this.input.manager.enabled = true;
     this.input.keyboard.on('keydown_P', this.pause, this);
     this.input.keyboard.on('keydown_ESC', this.pause, this);
@@ -104,19 +103,31 @@ class Interface extends Phaser.Scene {
     this.registry.events.on('changedata', this.updateData, this);
   }
 
+  startPlaying() {
+    this.scene.stop(this.currentScene);
+    this.scene.setVisible(true);
+    this.scene.launch('Pinup');
+    this.scene.launch('Board');
+  }
+
+  stopPlaying() {
+    this.scene.setVisible(false);
+    this.scene.stop('Board');
+    this.scene.stop('Pinup');
+  }
+
   gameOver() {
     if (this.scene.isActive('Board')) {
-      this.scene.stop('Board');
-      this.scene.stop('Pinup');
+      this.stopPlaying();
       this.scene.launch('GameOver');
     }
   }
 
   levelComplete() {
     if (this.scene.isActive('Board')) {
-      this.scene.stop('Pinup');
-      this.scene.stop('Board');
+      this.stopPlaying();
       this.scene.launch('LevelComplete');
+      this.setCurrentScene('LevelComplete');
     }
   }
 
@@ -126,9 +137,10 @@ class Interface extends Phaser.Scene {
       this.scene.stop('Pause');
     }
 
-    this.scene.stop('Pinup');
-    this.scene.stop('Board');
-    this.scene.start('Title');
+    this.stopPlaying();
+    this.intro();
+  }
+
   intro() {
     this.scene.setVisible(false);
     this.scene.launch('Intro');
@@ -141,6 +153,7 @@ class Interface extends Phaser.Scene {
     this.scene.launch('MainMenu');
     this.setCurrentScene('MainMenu');
   }
+
   restartLevel() {
     if (this.isPaused) {
       this.isPaused = false;
@@ -155,7 +168,7 @@ class Interface extends Phaser.Scene {
   }
 
   pause() {
-    if(!this.isPaused) {
+    if(!this.isPaused && this.scene.isActive('Board')) {
       this.scene.pause('Board');
       this.isPaused = true;
       this.scene.launch('Pause');
