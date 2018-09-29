@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "phaser": "github:photonstorm/phaser#master",
-    "phaser3-nineslice": "^0.3.7"
+    "phaser3-nineslice": "^0.3.7",
+    "tslib": "^1.9.3"
   }
 }
