@@ -71,6 +71,10 @@ class Boot extends Phaser.Scene {
         url: 'interface.png',
       })
       .image({
+        key: 'nineslice',
+        url: 'nineslice.png',
+      })
+      .image({
         key: 'menu',
         url: 'menu.png',
       })
