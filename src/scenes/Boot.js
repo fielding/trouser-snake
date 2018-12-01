@@ -35,6 +35,30 @@ class Boot extends Phaser.Scene {
       .script('https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont')
       .setPath('assets/img/')
       .image({
+        key: 'backpanel',
+        url: 'backpanel.png',
+      })
+      .image({
+        key: 'sound-on',
+        url: 'sound-on.png',
+      })
+      .image({
+        key: 'sound-off',
+        url: 'sound-off.png',
+      })
+      .image({
+        key: 'music-on',
+        url: 'music-on.png',
+      })
+      .image({
+        key: 'music-off',
+        url: 'music-off.png',
+      })
+      .image({
+        key: 'options',
+        url: 'options.png',
+      })
+      .image({
         key: 'nearground',
         url: 'nearground.png',
       })
@@ -81,6 +105,14 @@ class Boot extends Phaser.Scene {
       .image({
         key: 'pause',
         url: 'pause.png',
+      })
+      .image({
+        key: 'pause-toggle',
+        url: 'pause-toggle.png',
+      })
+      .image({
+        key: 'pause-toggle-paused',
+        url: 'pause-toggle-paused.png',
       })
       .image({
         key: 'play',
